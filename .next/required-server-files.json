@@ -9,7 +9,7 @@
     "typedRoutes": false,
     "distDir": ".next",
     "cleanDistDir": true,
-    "assetPrefix": "",
+    "assetPrefix": "https://tomiwaoluwadare.github.io/out/",
     "cacheMaxMemorySize": 52428800,
     "configOrigin": "next.config.js",
     "useFileSystemPublicRoutes": true,
@@ -62,7 +62,13 @@
           "search": ""
         }
       ],
-      "remotePatterns": [],
+      "remotePatterns": [
+        {
+          "hostname": "tomiwaoluwadare.github.io",
+          "protocol": "https",
+          "port": ""
+        }
+      ],
       "qualities": [
         75
       ],
@@ -82,7 +88,7 @@
     "productionBrowserSourceMaps": false,
     "excludeDefaultMomentLocales": true,
     "reactProductionProfiling": false,
-    "reactStrictMode": null,
+    "reactStrictMode": true,
     "reactMaxHeadersLength": 6000,
     "httpAgentOptions": {
       "keepAlive": true
