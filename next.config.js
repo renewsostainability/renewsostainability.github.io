@@ -2,7 +2,7 @@
 const nextConfig = {
   output: "export",
   reactStrictMode: true,
-  assetPrefix: "https://tomiwaoluwadare.github.io/out/",
+  assetPrefix: "https://tomiwaoluwadare.github.io/out",
 };
 
 module.exports = nextConfig;
