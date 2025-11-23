@@ -20,7 +20,7 @@
       256,
       384
     ],
-    "path": "/_next/image",
+    "path": "/_next/image/",
     "loader": "default",
     "loaderFile": "",
     "domains": [],
@@ -40,14 +40,7 @@
         "search": ""
       }
     ],
-    "remotePatterns": [
-      {
-        "protocol": "https",
-        "hostname": "^(?:^(?:tomiwaoluwadare\\.github\\.io)$)$",
-        "port": "",
-        "pathname": "^(?:(?!(?:^|\\/)\\.{1,2}(?:\\/|$))(?:(?:(?!(?:^|\\/)\\.{1,2}(?:\\/|$)).)*?)\\/?)$"
-      }
-    ],
+    "remotePatterns": [],
     "qualities": [
       75
     ],

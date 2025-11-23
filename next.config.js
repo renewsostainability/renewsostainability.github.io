@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export",
-  reactStrictMode: true,
-  assetPrefix: "https://tomiwaoluwadare.github.io/out",
+  output: "export",      // tells Next.js to produce static HTML
+  trailingSlash: true,   // creates folders with index.html for nested routes
+  assetPrefix: "./",     // relative paths for GitHub Pages
 };
 
 module.exports = nextConfig;

@@ -5,21 +5,35 @@
   "basePath": "",
   "redirects": [
     {
-      "source": "/:path+/",
-      "destination": "/:path+",
+      "source": "/:file((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/]+\\.\\w+)/",
+      "destination": "/:file",
+      "internal": true,
+      "priority": true,
+      "missing": [
+        {
+          "type": "header",
+          "key": "x-nextjs-data"
+        }
+      ],
+      "statusCode": 308,
+      "regex": "^(?:/((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/]+\\.\\w+))/$"
+    },
+    {
+      "source": "/:notfile((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/\\.]+)",
+      "destination": "/:notfile/",
       "internal": true,
       "priority": true,
       "statusCode": 308,
-      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+      "regex": "^(?:/((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/\\.]+))$"
     }
   ],
   "headers": [],
   "rewrites": {
     "beforeFiles": [
       {
-        "source": "/out/_next/:path+",
+        "source": "/.//_next/:path+",
         "destination": "/_next/:path+",
-        "regex": "^/out/_next(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))(?:/)?$"
+        "regex": "^/\\.//_next(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))(?:/)?$"
       }
     ],
     "afterFiles": [],
@@ -34,16 +48,10 @@
       "namedRegex": "^/(?:/)?$"
     },
     {
-      "page": "/_global-error",
-      "regex": "^/_global\\-error(?:/)?$",
+      "page": "/ClientHydrate",
+      "regex": "^/ClientHydrate(?:/)?$",
       "routeKeys": {},
-      "namedRegex": "^/_global\\-error(?:/)?$"
-    },
-    {
-      "page": "/_not-found",
-      "regex": "^/_not\\-found(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/_not\\-found(?:/)?$"
+      "namedRegex": "^/ClientHydrate(?:/)?$"
     },
     {
       "page": "/eligibility_checks/amw_renewable_ppa_eligibility_form",
@@ -80,6 +88,66 @@
       "regex": "^/eligibility_results/warm_home_discount_scheme_result(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/eligibility_results/warm_home_discount_scheme_result(?:/)?$"
+    },
+    {
+      "page": "/homepage/About",
+      "regex": "^/homepage/About(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/homepage/About(?:/)?$"
+    },
+    {
+      "page": "/homepage/Contact",
+      "regex": "^/homepage/Contact(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/homepage/Contact(?:/)?$"
+    },
+    {
+      "page": "/homepage/FAQ",
+      "regex": "^/homepage/FAQ(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/homepage/FAQ(?:/)?$"
+    },
+    {
+      "page": "/homepage/Footer",
+      "regex": "^/homepage/Footer(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/homepage/Footer(?:/)?$"
+    },
+    {
+      "page": "/homepage/Header",
+      "regex": "^/homepage/Header(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/homepage/Header(?:/)?$"
+    },
+    {
+      "page": "/homepage/Hero",
+      "regex": "^/homepage/Hero(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/homepage/Hero(?:/)?$"
+    },
+    {
+      "page": "/homepage/HowItWorks",
+      "regex": "^/homepage/HowItWorks(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/homepage/HowItWorks(?:/)?$"
+    },
+    {
+      "page": "/homepage/Partners",
+      "regex": "^/homepage/Partners(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/homepage/Partners(?:/)?$"
+    },
+    {
+      "page": "/homepage/Products",
+      "regex": "^/homepage/Products(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/homepage/Products(?:/)?$"
+    },
+    {
+      "page": "/homepage/WhyUs",
+      "regex": "^/homepage/WhyUs(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/homepage/WhyUs(?:/)?$"
     },
     {
       "page": "/mandatory_form/amw-renewable-ppa-form",

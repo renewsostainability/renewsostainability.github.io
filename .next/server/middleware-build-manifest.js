@@ -1,20 +1,170 @@
 globalThis.__BUILD_MANIFEST = {
   "pages": {
-    "/_app": []
+    "/": [
+      "static/chunks/e1ebd0e61614f474.js",
+      "static/chunks/c0931006ec2ff10a.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/turbopack-42637e2e90e43f81.js"
+    ],
+    "/ClientHydrate": [
+      "static/chunks/5c30a93010a50849.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/turbopack-c423c6ba302bd31e.js"
+    ],
+    "/_app": [
+      "static/chunks/d2675477b5e1f053.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/6aa8ad2e66be87a7.css",
+      "static/chunks/turbopack-d593d199a16372e0.js"
+    ],
+    "/_error": [
+      "static/chunks/7cfe9aae349ccb5b.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/turbopack-d333d8d739686a8e.js"
+    ],
+    "/eligibility_checks/amw_renewable_ppa_eligibility_form": [
+      "static/chunks/e1ebd0e61614f474.js",
+      "static/chunks/368634fa4a153ad5.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/ec078872ae044ebd.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/turbopack-8002a99ebfccb8e2.js"
+    ],
+    "/eligibility_checks/beas_grants_eligibility_form": [
+      "static/chunks/e1ebd0e61614f474.js",
+      "static/chunks/fefb6e513bddbc05.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/ec078872ae044ebd.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/turbopack-d0db5e31f63a3e6d.js"
+    ],
+    "/eligibility_checks/warm_home_discount_scheme_form": [
+      "static/chunks/e1ebd0e61614f474.js",
+      "static/chunks/efe880ac25e6837f.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/ec078872ae044ebd.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/turbopack-9d89532913abab81.js"
+    ],
+    "/eligibility_results/amw_renewable_energy_eligibility_result": [
+      "static/chunks/e1ebd0e61614f474.js",
+      "static/chunks/a256d03f5dcbf473.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/ec078872ae044ebd.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/turbopack-3360e0bf45dcb91d.js"
+    ],
+    "/eligibility_results/beas_scheme_eligibility_result": [
+      "static/chunks/e1ebd0e61614f474.js",
+      "static/chunks/bdbba4da60a196c6.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/ec078872ae044ebd.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/turbopack-5862ec6e878a656c.js"
+    ],
+    "/eligibility_results/warm_home_discount_scheme_result": [
+      "static/chunks/20385ac5da6d9a31.js",
+      "static/chunks/e1ebd0e61614f474.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/ec078872ae044ebd.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/turbopack-c2905384fb8ca03e.js"
+    ],
+    "/homepage/About": [
+      "static/chunks/756dbf621e3bce9d.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/turbopack-3a5a171fc8e6109c.js"
+    ],
+    "/homepage/Contact": [
+      "static/chunks/cf772c052ca15e26.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/turbopack-c622ba4136d54b0d.js"
+    ],
+    "/homepage/FAQ": [
+      "static/chunks/36df7cc62ce638b1.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/turbopack-fef38edbdd172147.js"
+    ],
+    "/homepage/Footer": [
+      "static/chunks/04e940c4ed62315f.js",
+      "static/chunks/e1ebd0e61614f474.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/turbopack-f1f835d589ee9bfb.js"
+    ],
+    "/homepage/Header": [
+      "static/chunks/15e87ab2aec2c612.js",
+      "static/chunks/e1ebd0e61614f474.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/turbopack-6ca8079f2a1ffc04.js"
+    ],
+    "/homepage/Hero": [
+      "static/chunks/d7a11edb242d8e70.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/turbopack-d9199e72a66a872f.js"
+    ],
+    "/homepage/HowItWorks": [
+      "static/chunks/b21da0dbe2835be0.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/turbopack-70c2768889d6d000.js"
+    ],
+    "/homepage/Partners": [
+      "static/chunks/12143535ec9d2a27.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/turbopack-f00e335168e1cadc.js"
+    ],
+    "/homepage/Products": [
+      "static/chunks/fedd34729cd84e98.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/turbopack-3e7ff150cc6324de.js"
+    ],
+    "/homepage/WhyUs": [
+      "static/chunks/b448701730651573.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/turbopack-3c29f172d1dc9a4a.js"
+    ],
+    "/mandatory_form/amw-renewable-ppa-form": [
+      "static/chunks/e1ebd0e61614f474.js",
+      "static/chunks/e7e06af2f54a64bb.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/ec078872ae044ebd.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/turbopack-4e5b885f88977c53.js"
+    ],
+    "/mandatory_form/beas-grants-form": [
+      "static/chunks/e1ebd0e61614f474.js",
+      "static/chunks/bee615f40d03df95.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/ec078872ae044ebd.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/turbopack-3163775d7edad42c.js"
+    ],
+    "/mandatory_form/ppa-assessment-form": [
+      "static/chunks/e1ebd0e61614f474.js",
+      "static/chunks/b489a74ae507ae95.js",
+      "static/chunks/d61a4a99fa337502.js",
+      "static/chunks/ec078872ae044ebd.js",
+      "static/chunks/602943d41ced8b3c.js",
+      "static/chunks/turbopack-a1acc17ac26e06d0.js"
+    ]
   },
   "devFiles": [],
-  "polyfillFiles": [
-    "static/chunks/a6dad97d9634a72d.js"
-  ],
+  "polyfillFiles": [],
   "lowPriorityFiles": [],
-  "rootMainFiles": [
-    "static/chunks/a398fde8ff0fe073.js",
-    "static/chunks/112f346e31f991df.js",
-    "static/chunks/557be5c833d730fe.js",
-    "static/chunks/ff07fd46409b0e0a.js",
-    "static/chunks/0e270075b34e868d.js",
-    "static/chunks/turbopack-602ba36d93719ab9.js"
-  ]
+  "rootMainFiles": []
 };
 globalThis.__BUILD_MANIFEST.lowPriorityFiles = [
 "/static/" + process.env.__NEXT_BUILD_ID + "/_buildManifest.js",
