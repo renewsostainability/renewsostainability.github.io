@@ -1,0 +1,20 @@
+@keyframes scroll-marquee {
+    0% {
+    transform: translateX(0);
+    }
+    100% {
+    transform: translateX(-50%);
+    }
+}
+.animate-scroll-marquee {
+    animation: scroll-marquee 40s linear infinite;
+    width: fit-content;
+}
+.animate-pause {
+    animation-play-state: paused;
+}
+
+/* Ensure no horizontal scroll */
+html, body {
+    overflow-x: hidden;
+}
