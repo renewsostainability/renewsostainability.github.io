@@ -16,7 +16,7 @@ export default function Header() {
   }, []);
 
 
-  const homepage_ids = ['home', 'products', 'why-us', 'how-it-works', 'partners', 'faq', 'contact']
+  const homepage_ids = ['', 'home', 'products', 'why-us', 'how-it-works', 'partners', 'faq', 'contact']
   const location = useLocation();
   const isHome = homepage_ids.includes(location.pathname.slice(1))
 
