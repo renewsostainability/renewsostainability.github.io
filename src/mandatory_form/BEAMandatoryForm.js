@@ -219,7 +219,7 @@ export default function BEAMandatoryForm() {
       localStorage.setItem('termsAccepted', JSON.stringify(formData.termsAccepted));
       
       // Proceed with form submission
-      window.location.replace('#/eligibility_checks/beas-form');
+      window.location.replace('#/eligibility_checks/beas-check');
     } else {
       console.log('Form has validation errors');
     }

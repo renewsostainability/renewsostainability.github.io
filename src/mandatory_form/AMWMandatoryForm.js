@@ -217,7 +217,7 @@ export default function AMWMandatoryForm() {
       });
 
       // Navigate to eligibility check page
-      window.location.replace('#/eligibility_checks/amw-form');
+      window.location.replace('#/eligibility_checks/amw-check');
       
     } else {
       console.log('Form has validation errors');
