@@ -1,6 +1,8 @@
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Home from './Home';
+
+import Admin from './Admin';
 import PPAMandatoryForm from './mandatory_form/PPAMandatoryForm';
 import BEAMandatoryForm from './mandatory_form/BEAMandatoryForm';
 import AMWMandatoryForm from './mandatory_form/AMWMandatoryForm';
@@ -22,6 +24,7 @@ export default function App() {
           <Route path="/why-us" element={<Home />} />
           <Route path="/products" element={<Home />} />
           <Route path="/how-it-works" element={<Home />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="/mandatory_form/ppa-form" element={<PPAMandatoryForm />} />
           <Route path="/mandatory_form/beas-form" element={<BEAMandatoryForm />} />
           <Route path="/mandatory_form/amw-form" element={<AMWMandatoryForm />} />

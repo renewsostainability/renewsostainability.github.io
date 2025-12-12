@@ -16,7 +16,7 @@ export default function Header() {
   }, []);
 
 
-  const homepage_ids = ['', 'home', 'products', 'why-us', 'how-it-works', 'partners', 'faq', 'contact']
+  const homepage_ids = ['', 'home', 'products', 'why-us', 'how-it-works', 'partners', 'faq', 'contact', 'admin']
   const location = useLocation();
   const isHome = homepage_ids.includes(location.pathname.slice(1))
 
@@ -101,6 +101,11 @@ export default function Header() {
                     </button>
                   </li>
                 ))}
+                <li>
+                  <a href="#admin" className="text-gray-500 font-medium hover:text-green-600 transition">
+                      Admin
+                  </a>
+                </li>
               </ul>
             </nav>
 
@@ -163,6 +168,11 @@ export default function Header() {
                     </button>
                   </li>
                 ))}
+                <li>
+                  <a href="#admin" className="text-gray-500 font-medium hover:text-green-600 transition">
+                      Admin
+                  </a>
+                </li>
               </ul>
             </nav>
 

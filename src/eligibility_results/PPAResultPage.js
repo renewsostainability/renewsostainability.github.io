@@ -1,4 +1,4 @@
-// "use client";
+import { useState, useEffect } from 'react';
 import { 
   FaTimesCircle,
   FaEdit,
@@ -14,15 +14,17 @@ import {
   FaUserTie,
   FaClipboardList,
   FaPhone,
-  FaCalendar
+  FaCalendar,
+  FaEnvelope,
+  FaPaperPlane,
+  FaFilePdf
 } from 'react-icons/fa';
 
 import Header from '../homepage/Header';
 import Footer from '../homepage/Footer';
-import { useState, useEffect } from 'react';
+import { generateHTMLQuote } from '../components/Quote';
 
 export default function PPAResultPage() {
-
   const [dataVerified, setDataVerified] = useState({
     nameOnBill: false,
     floorArea: false,
@@ -30,14 +32,31 @@ export default function PPAResultPage() {
     propertyType: false,
     pensionCredit: false,
     benefits: false,
-    epcRating: false
+    epcRating: false,
+    annualIncome: false
   });
 
   const [primaryReason, setPrimaryReason] = useState('');
   const [allFieldsTrue, setAllFieldsTrue] = useState(false);
+  const [mailtoLink, setMailtoLink] = useState('');
+  const [suggestedServices, setSuggestedServices] = useState([]);
+  const [totalEstimatedCost, setTotalEstimatedCost] = useState('');
+  const [generatingPDF, setGeneratingPDF] = useState(false);
+  const [sendingEmail, setSendingEmail] = useState(false);
+  const [emailStatus, setEmailStatus] = useState('');
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    phone: ''
+  });
+  const [emailSubject, setEmailSubject] = useState('');
+  const [emailSent, setEmailSent] = useState(false);
+
+  // Your Google Apps Script Web App URL
+  const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzChLctjwFjJ8Btyg0J17WuXj91slxpsyPsRDMd9ffc9CPr67h472gvxBlYqG7DpQVL5Q/exec";
 
   useEffect(() => {
-    // Scroll to the top of the page
+    // Load user data
     let uk_low_income = 34500;
     let expected_benefits = ['Universal Credit', 'Housing Benefit', 'Income-based Jobseeker\'s Allowance', 'Employment & Support Allowance'];
     let expected_epc_ratings = ['A', 'B', 'C'];
@@ -58,16 +77,9 @@ export default function PPAResultPage() {
     const allFieldsTrue = Object.values(verifiedData).every(Boolean);
     
     setAllFieldsTrue(allFieldsTrue);
-
-    console.log('verifiedData:', verifiedData);
-    console.log('allFieldsTrue:', allFieldsTrue);
-
-
     setDataVerified(verifiedData);
 
-    // Determine primary reason for ineligibility
     if (!allFieldsTrue) {
-      
       if (!verifiedData.benefits && !verifiedData.pensionCredit) {
         setPrimaryReason('Not receiving qualifying benefits or pension credit');
       } else if (!verifiedData.epcRating) {
@@ -78,89 +90,335 @@ export default function PPAResultPage() {
         setPrimaryReason('Property characteristics do not meet scheme requirements');
       }
     }
+
+    // Load user data for quotes
+    const userName = localStorage.getItem('fullName') || 'Customer';
+    const userEmail = localStorage.getItem('email') || '';
+    const userPhone = localStorage.getItem('phone') || '09031234567';
+
+    setUserData({
+      name: userName,
+      email: userEmail,
+      phone: userPhone
+    });
+
+    // Set email subject
+    const subject = allFieldsTrue 
+      ? `Energy Efficiency Quote - Approved for ${userName}`
+      : `Energy Efficiency Recommendations - ${userName}`;
+    setEmailSubject(subject);
+
+    // Load suggested services from localStorage
+    loadSuggestedServices();
   }, []);
 
-  const improvements = [
-    { icon: FaHome, title: 'Loft Insulation', color: 'text-blue-600', desc: 'Install 270mm thick loft insulation to prevent heat loss through the roof.' },
-    { icon: FaLightbulb, title: 'LED Lighting', color: 'text-red-500', desc: 'Replace all halogen and incandescent bulbs with LED alternatives.' },
-    { icon: FaShieldAlt, title: 'Cavity Wall Insulation', color: 'text-green-400', desc: 'Fill cavity walls with insulation material to reduce heat transfer.' },
-    { icon: FaThermometerHalf, title: 'Smart Heating Controls', color: 'text-yellow-300', desc: 'Install smart thermostats and heating zone controls for better efficiency.' },
-    { icon: FaSolarPanel, title: 'Solar Panel Installation', color: 'text-purple-700', desc: 'Install photovoltaic panels to generate renewable electricity.' },
-    { icon: FaTint, title: 'Water Efficiency Measures', color: 'text-orange-500', desc: 'Install water-saving devices and improve hot water system efficiency.' }
-  ];
+  // Load suggested services from localStorage and calculate total cost
+  const loadSuggestedServices = () => {
+    try {
+      // Load PPA services from localStorage (where admin stores them)
+      const ppaServices = JSON.parse(localStorage.getItem('admin_ppa_services') || '[]');
+      
+      // Filter to only include services with price information
+      const servicesWithPrice = ppaServices.filter(service => service.price && service.price.trim() !== '');
+      
+      // Take up to 6 services
+      const suggestedServices = servicesWithPrice.slice(0, 6);
+      setSuggestedServices(suggestedServices);
+      
+      // Calculate total estimated cost range
+      if (suggestedServices.length > 0) {
+        calculateTotalCost(suggestedServices);
+      }
+      
+      // Generate mailto link when services are loaded
+      generateMailtoLink(suggestedServices);
+      
+    } catch (error) {
+      console.error('Error loading suggested services:', error);
+    }
+  };
 
+  // Generate mailto link
+  const generateMailtoLink = (services) => {
+    const subject = encodeURIComponent(emailSubject);
+    const userName = userData.name || 'Customer';
+    
+    let body = `Dear ${userName},\n\n`;
+    body += allFieldsTrue 
+      ? 'Congratulations! You qualify for energy efficiency support. Here is your personalized quote:\n\n'
+      : 'While you don\'t qualify for the full scheme, here are our recommendations to improve your energy efficiency:\n\n';
+    
+    if (services.length > 0) {
+      services.forEach((service, index) => {
+        body += `${index + 1}. ${service.title}\n`;
+        if (service.price) {
+          body += `   Estimated Cost: ${service.price}\n`;
+        }
+        if (service.description) {
+          body += `   ${service.description.substring(0, 150)}...\n`;
+        }
+        body += '\n';
+      });
+      
+      if (totalEstimatedCost) {
+        body += `Total Estimated Investment: ${totalEstimatedCost}\n\n`;
+      }
+    }
+    
+    body += 'Best regards,\nEnergy Efficiency Team';
+    
+    const mailto = `mailto:${userData.email}?subject=${subject}&body=${encodeURIComponent(body)}`;
+    setMailtoLink(mailto);
+  };
+
+  // Calculate total estimated cost from services
+  const calculateTotalCost = (services) => {
+    let minTotal = 0;
+    let maxTotal = 0;
+    
+    services.forEach(service => {
+      const price = service.price;
+      if (price) {
+        // Extract numbers from price strings like "£800 - £1,500" or "£4,000"
+        const numbers = price.match(/\d+(?:,\d+)?/g);
+        if (numbers) {
+          const nums = numbers.map(num => parseFloat(num.replace(/,/g, '')));
+          if (nums.length === 2) {
+            minTotal += nums[0];
+            maxTotal += nums[1];
+          } else if (nums.length === 1) {
+            minTotal += nums[0];
+            maxTotal += nums[0];
+          }
+        }
+      }
+    });
+    
+    if (minTotal > 0 || maxTotal > 0) {
+      const costStr = `£${minTotal.toLocaleString()} - £${maxTotal.toLocaleString()}`;
+      setTotalEstimatedCost(costStr);
+      return costStr;
+    }
+    return '';
+  };
+
+  // Send email via Google Apps Script - Using FormData approach
+  const sendEmailViaGAS = async () => {
+    if (!userData.email) {
+      alert('Please provide your email address first');
+      return;
+    }
+
+    setSendingEmail(true);
+    setEmailStatus('Sending...');
+
+    try {
+      // Generate HTML quote
+      const htmlContent = generateHTMLQuote(userData, suggestedServices, totalEstimatedCost, allFieldsTrue);
+      
+      // Create FormData for URL-encoded submission
+      const formData = new URLSearchParams();
+      formData.append('to', userData.email);
+      formData.append('subject', emailSubject);
+      formData.append('htmlBody', htmlContent);
+      formData.append('name', userData.name);
+      
+      // Send using fetch with proper headers for form data
+      const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Important: Use no-cors for Google Apps Script
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString()
+      });
+
+      // With no-cors, we can't read the response, but we can show success
+      setEmailStatus('✓ Email sent! Check your inbox.');
+      setEmailSent(true);
+      
+      // Show success alert
+      setTimeout(() => {
+        alert(`✅ Quote has been sent to ${userData.email}!\n\nPlease check your inbox (and spam folder) within a few minutes.`);
+      }, 500);
+      
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setEmailStatus('Error - using fallback');
+      
+      // Fallback 1: Try using Google Apps Script with GET parameters
+      setTimeout(() => {
+        sendEmailViaGASGetFallback();
+      }, 1000);
+    } finally {
+      setSendingEmail(false);
+    }
+  };
+
+  // Fallback method using GET (for URL length limitations, use POST above)
+  const sendEmailViaGASGetFallback = () => {
+    try {
+      const htmlContent = generateHTMLQuote(userData, suggestedServices, totalEstimatedCost, allFieldsTrue);
+      
+      // Create a form with GET method
+      const form = document.createElement('form');
+      form.method = 'GET';
+      form.action = GOOGLE_APPS_SCRIPT_URL;
+      form.target = '_blank';
+      
+      // Add parameters - note: GET has URL length limitations
+      const params = {
+        to: userData.email,
+        subject: encodeURIComponent(emailSubject.substring(0, 100)), // Truncate for URL
+        name: encodeURIComponent(userData.name.substring(0, 50))
+      };
+      
+      Object.keys(params).forEach(key => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = params[key];
+        form.appendChild(input);
+      });
+      
+      document.body.appendChild(form);
+      form.submit();
+      document.body.removeChild(form);
+      
+      alert('Email request sent via fallback method. Please check your email.');
+      setEmailSent(true);
+      
+    } catch (error) {
+      console.error('Fallback also failed:', error);
+      
+      // Final fallback: Use mailto link
+      if (mailtoLink) {
+        window.location.href = mailtoLink;
+        setEmailSent(true);
+      } else {
+        alert('Could not send email. Please copy your quote manually.');
+      }
+    }
+  };
+
+  // Generate and download HTML quote
+  const generateAndDownloadHTML = () => {
+    setGeneratingPDF(true);
+    
+    try {
+      // Generate HTML quote
+      const htmlQuote = generateHTMLQuote(userData, suggestedServices, totalEstimatedCost, allFieldsTrue);
+      
+      // Create a blob and download
+      const blob = new Blob([htmlQuote], { type: 'text/html' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Energy_Efficiency_Quote_${userData.name || 'Customer'}.html`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      
+      alert('Quote downloaded successfully!');
+      
+    } catch (error) {
+      console.error('Error generating quote:', error);
+      alert('Error generating quote. Please try again or use the email option.');
+    } finally {
+      setGeneratingPDF(false);
+    }
+  };
+
+  // View HTML quote in new tab
+  const viewHTMLQuote = () => {
+    try {
+      const htmlQuote = generateHTMLQuote(userData, suggestedServices, totalEstimatedCost, allFieldsTrue);
+      const blob = new Blob([htmlQuote], { type: 'text/html' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+      // Don't revoke URL immediately as the new tab needs it
+      setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+    } catch (error) {
+      console.error('Error viewing quote:', error);
+      alert('Error displaying quote. Please try downloading instead.');
+    }
+  };
+
+  // Verification configuration
   const verificationConfig = {
     pensionCredit: {
-        title: "Pension Credit",
-        description: {
+      title: "Pension Credit",
+      description: {
         true: "You receive the Guarantee Credit element of Pension Credit with a participating energy supplier.",
         false: "You do not receive the Guarantee Credit element of Pension Credit.",
-        },
+      },
     },
-
     benefits: {
-        title: "Qualifying Benefits",
-        description: {
+      title: "Qualifying Benefits",
+      description: {
         true: "Your household receives a qualifying means-tested benefit (e.g., Universal Credit, Housing Benefit, Income Support).",
         false: "You are not receiving any qualifying means-tested benefits.",
-        },
+      },
     },
-
     propertyType: {
-        title: "Property Type",
-        description: {
+      title: "Property Type",
+      description: {
         true: "Your property type qualifies for high-energy-cost assessment.",
         false: "Your property type does not qualify for high-energy-cost assessment.",
-        },
+      },
     },
-
     propertyAge: {
-        title: "Property Age",
-        description: {
+      title: "Property Age",
+      description: {
         true: "Your property age qualifies for high-energy-cost assessment.",
         false: "Your property age does not qualify for high-energy-cost assessment.",
-        },
+      },
     },
-
     floorArea: {
-        title: "Floor Area",
-        description: {
+      title: "Floor Area",
+      description: {
         true: "Your property's floor area supports a high energy-cost score.",
         false: "Your property's floor area does not indicate a high energy-cost score.",
-        },
+      },
     },
-
     annualIncome: {
-        title: "Annual Income",
-        description: {
+      title: "Annual Income",
+      description: {
         true: "Your annual income meets the eligibility requirement.",
         false: "Your annual income does not meet the eligibility requirement.",
-        },
+      },
     },
-
     nameOnBill: {
-        title: "Bill Responsibility",
-        description: {
-        true: "Your name (or your partner’s) is on the electricity bill.",
-        false: "Your name (or your partner’s) is not on the electricity bill.",
-        },
+      title: "Bill Responsibility",
+      description: {
+        true: "Your name (or your partner's) is on the electricity bill.",
+        false: "Your name (or your partner's) is not on the electricity bill.",
+      },
     },
-
     epcRating: {
-        title: "EPC Rating",
-        description: {
+      title: "EPC Rating",
+      description: {
         true: "Your EPC rating is D, E, F or G, which meets the eligibility requirement.",
         false: "Your EPC rating is not D, E, F or G (your home is too energy-efficient).",
-        },
+      },
     },
-    };
-
-
+  };
 
   return (
     <>
       <Header />
       
+      {/* Email Status Banner */}
+      {emailSent && (
+        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50">
+          <div className="bg-green-100 border border-green-400 text-green-700 px-6 py-3 rounded-lg shadow-lg flex items-center">
+            <FaCheckCircle className="w-5 h-5 mr-2" />
+            <span>Quote sent to your email successfully!</span>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-green-50 via-emerald-50 to-white">
         <section className="pt-32 pb-20 bg-gradient-to-br from-green-50 via-emerald-50 to-white">
@@ -175,20 +433,91 @@ export default function PPAResultPage() {
               </div>
             </div>
             <h1 className="text-5xl font-light text-gray-900 mb-6 tracking-tight">
-              WHD Eligibility Result
+              Eligibility Results & Quote
             </h1>
             <p className="text-2xl text-gray-600 mb-8 font-light">
               {allFieldsTrue ? ( 
                 <>
-                  Congratulations! Your property meets the eligibility criteria for the energy support scheme.
+                  Congratulations! You qualify for energy efficiency support.
                 </>
               ) : ( 
                 <>
-                  Unfortunately, your property does not currently meet the eligibility criteria for the energy support scheme.
+                  While you don't qualify for this scheme, we have recommendations to improve your energy efficiency.
                 </>
               )}
             </p>
+
+            {/* Email Status */}
+            <div className="mb-8">
+              {sendingEmail ? (
+                <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-lg">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-700 mr-2"></div>
+                  Sending quote to your email...
+                </div>
+              ) : emailSent ? (
+                <div className="inline-flex items-center px-4 py-2 bg-green-100 text-green-700 rounded-lg">
+                  <FaEnvelope className="w-4 h-4 mr-2" />
+                  Quote sent! Check your inbox.
+                </div>
+              ) : (
+                <div className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg">
+                  <FaPaperPlane className="w-4 h-4 mr-2" />
+                  Ready to send your personalized quote
+                </div>
+              )}
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              {/* Email Send Button */}
+              <button 
+                onClick={sendEmailViaGAS}
+                disabled={sendingEmail || !userData.email || emailSent}
+                className={`px-8 py-4 flex items-center justify-center rounded-xl font-medium transition-all duration-200 ${
+                  sendingEmail 
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                    : emailSent
+                    ? 'bg-green-500 text-white hover:bg-green-600'
+                    : 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white'
+                }`}
+              >
+                {sendingEmail ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                    Sending...
+                  </>
+                ) : emailSent ? (
+                  <>
+                    <FaEnvelope className="w-5 h-5 mr-3" />
+                    Resend Email
+                  </>
+                ) : (
+                  <>
+                    <FaPaperPlane className="w-5 h-5 mr-3" />
+                    Send Quote via Email
+                  </>
+                )}
+              </button>
+              
+              {/* HTML Download Button */}
+              <button 
+                onClick={generateAndDownloadHTML}
+                disabled={generatingPDF || suggestedServices.length === 0}
+                className="px-8 py-4 border border-green-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors duration-200 flex rounded-xl items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {generatingPDF ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-700 mr-3"></div>
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <FaFilePdf className="w-5 h-5 mr-3" />
+                    Download Quote (HTML)
+                  </>
+                )}
+              </button>
+              
+              {/* Revise Button */}
               <button 
                 onClick={() => window.location.replace('#/eligibility_checks/ppa-check')}
                 className="px-8 py-4 border border-green-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors duration-200 flex rounded-xl items-center justify-center"
@@ -196,23 +525,41 @@ export default function PPAResultPage() {
                 <FaEdit className="w-5 h-5 mr-3" />
                 Revise Application
               </button>
-              {allFieldsTrue ? (
-                <button
-                  // onClick={() => window.location.href = '/#'}
-                  className="px-8 py-4 flex bg-gradient-to-r justify-center from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+            </div>
+
+            {userData.email && (
+              <p className="mt-4 text-gray-600">
+                Quote will be sent to: <span className="font-medium">{userData.email}</span>
+                {emailStatus && <span className="ml-2 text-sm text-green-600">{emailStatus}</span>}
+              </p>
+            )}
+
+            {!userData.email && (
+              <p className="mt-4 text-red-600">
+                Please add your email address to receive the quote
+              </p>
+            )}
+
+            {/* Mailto Link as Fallback */}
+            {mailtoLink && userData.email && (
+              <div className="mt-4">
+                <a 
+                  href={mailtoLink}
+                  className="text-blue-600 hover:text-blue-800 text-sm underline"
                 >
-                  <FaHome className="w-5 h-5 mr-3" />
-                  Go to Dashboard
-                </button>
-                ) : (
-                <button
-                  onClick={() => window.location.replace('#/#contact')}
-                  className="px-8 py-4 flex bg-gradient-to-r justify-center from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
-                >
-                  <FaHeadset className="w-5 h-5 mr-3" />
-                  Speak to Advisor
-                </button>
-              )}
+                  Or use standard email client
+                </a>
+              </div>
+            )}
+
+            <div className="mt-6">
+              <button 
+                onClick={viewHTMLQuote}
+                className="text-green-600 hover:text-green-800 font-medium flex items-center justify-center mx-auto"
+              >
+                <FaClipboardList className="w-4 h-4 mr-2" />
+                View Online Quote
+              </button>
             </div>
           </div>
         </section>
@@ -221,149 +568,122 @@ export default function PPAResultPage() {
         <section className="py-20 bg-white">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-light text-gray-900 mb-4">Eligibility Assessment</h2>
-              <p className="text-gray-600 text-lg">Detailed breakdown of your application assessment</p>
+              <h2 className="text-3xl font-light text-gray-900 mb-4">Assessment Summary</h2>
+              <p className="text-gray-600 text-lg">Detailed breakdown of your application</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
               {Object.entries(verificationConfig).map(([key, item]) => {
-                  const verified = dataVerified[key];
-                  const Icon = verified ? FaCheckCircle : FaTimesCircle;
+                const verified = dataVerified[key];
+                const Icon = verified ? FaCheckCircle : FaTimesCircle;
 
-                  return (
+                return (
                   <div key={key} className="text-center p-8 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-                      <div
-                      className={`w-16 h-16 ${
-                          verified ? "text-green-50" : "text-red-50"
-                      } rounded-full flex items-center justify-center mx-auto mb-4`}
-                      >
-                      <Icon
-                          className={`w-8 h-8 ${
-                          verified ? "text-green-600" : "text-red-600"
-                          }`}
-                      />
-                      </div>
-
-                      <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    <div className={`w-16 h-16 ${
+                      verified ? "text-green-50" : "text-red-50"
+                    } rounded-full flex items-center justify-center mx-auto mb-4`}>
+                      <Icon className={`w-8 h-8 ${
+                        verified ? "text-green-600" : "text-red-600"
+                      }`} />
+                    </div>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
                       {item.title}
-                      </h3>
-
-                      <p
-                      className={`${
-                          verified ? "text-green-600" : "text-red-600"
-                      } font-medium`}
-                      >
+                    </h3>
+                    <p className={`${
+                      verified ? "text-green-600" : "text-red-600"
+                    } font-medium`}>
                       {item.description[verified ? "true" : "false"]}
-                      </p>
+                    </p>
                   </div>
-                  );
+                );
               })}
-          </div>
-
-
-          {!allFieldsTrue && (
-            <div className="bg-white border border-gray-200 rounded-lg p-6 text-center">
-              <h3 className="text-xl font-semibold text-yellow-800 mb-4">Primary Reason for Ineligibility</h3>
-              <p className="text-yellow-700 text-lg">{primaryReason}</p>
             </div>
-          )}
-        </div>
+
+            {!allFieldsTrue && (
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
+                <h3 className="text-xl font-semibold text-yellow-800 mb-4">Why You Didn't Qualify</h3>
+                <p className="text-yellow-700 text-lg">{primaryReason}</p>
+                <p className="text-yellow-600 mt-4">
+                  Don't worry! We have recommendations to help you improve.
+                </p>
+              </div>
+            )}
+          </div>
         </section>
 
         {/* Recommended Solutions */}
         <section className="py-20 bg-gradient-to-br from-green-50 via-emerald-50 to-white">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-light text-gray-900 mb-4">{allFieldsTrue ? 'You can still improve your net-zero score and save money' : 'Pathway to Eligibility'}</h2>
-              <p className="text-gray-600 text-lg">Strategic improvements to help you qualify for future schemes</p>
+              <h2 className="text-3xl font-light text-gray-900 mb-4">
+                Your Personalized Recommendations
+              </h2>
+              <p className="text-gray-600 text-lg">
+                Based on services in our database
+              </p>
+              {totalEstimatedCost && suggestedServices.length > 0 && (
+                <div className="mt-4 inline-block px-6 py-3 bg-emerald-100 text-emerald-800 rounded-lg">
+                  <strong>Total Estimated Cost Range:</strong> {totalEstimatedCost}
+                </div>
+              )}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {improvements.map((improvement, index) => (
-                <div key={index} className="group p-8 bg-white hover:bg-gray-50 transition-colors duration-200 border border-gray-200 rounded-lg">
-                  <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center mb-6 group-hover:bg-gray-100 transition-colors duration-200">
-                    <improvement.icon className={`w-6 h-6 ${improvement.color}`} />
+            {suggestedServices.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {suggestedServices.map((service, index) => (
+                  <div key={index} className="group p-8 bg-white hover:bg-gray-50 transition-colors duration-200 border border-gray-200 rounded-lg">
+                    <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center mb-6 group-hover:bg-gray-100 transition-colors duration-200">
+                      {index % 6 === 0 && <FaHome className="w-6 h-6 text-blue-600" />}
+                      {index % 6 === 1 && <FaLightbulb className="w-6 h-6 text-yellow-500" />}
+                      {index % 6 === 2 && <FaShieldAlt className="w-6 h-6 text-green-500" />}
+                      {index % 6 === 3 && <FaThermometerHalf className="w-6 h-6 text-red-500" />}
+                      {index % 6 === 4 && <FaSolarPanel className="w-6 h-6 text-purple-500" />}
+                      {index % 6 === 5 && <FaTint className="w-6 h-6 text-cyan-500" />}
+                    </div>
+                    <h3 className="text-xl font-medium text-gray-900 mb-4">{service.title}</h3>
+                    <p className="text-gray-600 mb-4 leading-relaxed">
+                      {service.description}
+                    </p>
+                    {service.price && (
+                      <div className="mb-4 p-3 bg-emerald-50 rounded-lg">
+                        <span className="font-medium text-emerald-800">Estimated Cost: </span>
+                        <span className="text-emerald-700">{service.price}</span>
+                      </div>
+                    )}
+                    {service.url && (
+                      <a
+                        href={service.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 font-medium flex items-center"
+                      >
+                        Learn more
+                        <FaArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
+                      </a>
+                    )}
                   </div>
-                  <h3 className="text-xl font-medium text-gray-900 mb-4">{improvement.title}</h3>
-                  <p className="text-gray-600 mb-6 leading-relaxed">
-                    {improvement.desc}
-                  </p>
-                  <button className="text-blue-900 font-medium flex items-center group-hover:text-gray-700 transition-colors duration-200">
-                    Learn more
-                    <FaArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-200" />
-                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FaHeadset className="w-8 h-8 text-gray-400" />
                 </div>
-              ))}
-            </div>
+                <h3 className="text-xl font-medium text-gray-900 mb-2">Loading Recommendations...</h3>
+                <p className="text-gray-600">
+                  Your personalized suggestions will appear here shortly.
+                </p>
+              </div>
+            )}
           </div>
         </section>
 
-        {/* Action Plan */}
+        {/* Contact Section */}
         <section className="py-20 bg-white">
-          <div className="max-w-4xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-light text-gray-900 mb-4">Recommended Action Plan</h2>
-              <p className="text-gray-600 text-lg">{allFieldsTrue ? 'Next Steps to Improve Net-zero Score' : 'Structured approach to improve your eligibility'}</p>
-            </div>
-
-            <div className="space-y-8">
-              <div className="flex items-start space-x-6 p-8 bg-white border border-gray-200 rounded-lg">
-                <div className="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-full flex items-center justify-center">
-                  <span className="text-white font-medium text-lg">1</span>
-                </div>
-                <div>
-                  <h3 className="text-xl font-medium text-gray-900 mb-3">Initial Assessment</h3>
-                  <p className="text-gray-600 mb-4">
-                    Schedule a comprehensive energy assessment to identify the most impactful improvements for your specific property.
-                  </p>
-                  <button className="text-gray-900 font-medium flex items-center hover:text-gray-700 transition-colors duration-200">
-                    <FaCalendar className="w-4 h-4 mr-2" />
-                    Schedule Assessment
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-6 p-8 bg-white border border-gray-200 rounded-lg">
-                <div className="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-full flex items-center justify-center">
-                  <span className="text-white font-medium text-lg">2</span>
-                </div>
-                <div>
-                  <h3 className="text-xl font-medium text-gray-900 mb-3">Implementation Strategy</h3>
-                  <p className="text-gray-600 mb-4">
-                    Work with certified installers to implement cost-effective energy efficiency measures that optimize your EPC rating.
-                  </p>
-                  <button className="text-gray-900 font-medium flex items-center hover:text-gray-700 transition-colors duration-200">
-                    <FaUserTie className="w-4 h-4 mr-2" />
-                    Find Installers
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex items-start space-x-6 p-8 bg-white border border-gray-200 rounded-lg">
-                <div className="flex-shrink-0 w-12 h-12 bg-gray-900 rounded-full flex items-center justify-center">
-                  <span className="text-white font-medium text-lg">3</span>
-                </div>
-                <div>
-                  <h3 className="text-xl font-medium text-gray-900 mb-3">Reassessment & Application</h3>
-                  <p className="text-gray-600 mb-4">
-                    Once improvements are complete, obtain a new EPC certificate and reapply for the energy support scheme.
-                  </p>
-                  <button className="text-gray-900 font-medium flex items-center hover:text-gray-700 transition-colors duration-200">
-                    <FaClipboardList className="w-4 h-4 mr-2" />
-                    Document Requirements
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Professional Support */}
-        <section className="py-20 bg-gradient-to-br from-green-50 via-emerald-50 to-white">
           <div className="max-w-4xl mx-auto px-6 text-center">
-            <h2 className="text-3xl font-light text-gray-900 mb-6">Professional Guidance Available</h2>
+            <h2 className="text-3xl font-light text-gray-900 mb-6">Need Help?</h2>
             <p className="text-gray-600 text-lg mb-12 max-w-2xl mx-auto">
-              Our energy specialists can provide personalized advice and connect you with certified professionals to help you achieve your energy efficiency goals.
+              Our energy specialists are here to help you understand your recommendations and next steps.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <button 
@@ -377,6 +697,23 @@ export default function PPAResultPage() {
                 <FaUserTie className="w-5 h-5 mr-3" />
                 Find Certified Installers
               </button>
+            </div>
+            
+            <div className="mt-12 pt-8 border-t border-gray-200">
+              <h3 className="text-xl font-medium text-gray-900 mb-4">Quote Support</h3>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <div className="text-gray-600">
+                  <FaEnvelope className="w-5 h-5 inline mr-2" />
+                  quotes@energyefficiency.co.uk
+                </div>
+                <div className="text-gray-600">
+                  <FaPhone className="w-5 h-5 inline mr-2" />
+                  0800 123 4567
+                </div>
+              </div>
+              <p className="text-gray-500 text-sm mt-4">
+                If you have issues receiving your quote via email, please check your spam folder or contact us.
+              </p>
             </div>
           </div>
         </section>
