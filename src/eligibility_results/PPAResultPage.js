@@ -23,6 +23,7 @@ import {
 import Header from '../homepage/Header';
 import Footer from '../homepage/Footer';
 import { generateHTMLQuote } from '../components/Quote';
+import { generateHTMLEligibilityResult } from '../components/Result';
 
 export default function PPAResultPage() {
   const [dataVerified, setDataVerified] = useState({
@@ -38,10 +39,8 @@ export default function PPAResultPage() {
 
   const [primaryReason, setPrimaryReason] = useState('');
   const [allFieldsTrue, setAllFieldsTrue] = useState(false);
-  const [mailtoLink, setMailtoLink] = useState('');
   const [suggestedServices, setSuggestedServices] = useState([]);
   const [totalEstimatedCost, setTotalEstimatedCost] = useState('');
-  const [generatingPDF, setGeneratingPDF] = useState(false);
   const [sendingEmail, setSendingEmail] = useState(false);
   const [emailStatus, setEmailStatus] = useState('');
   const [userData, setUserData] = useState({
@@ -51,6 +50,8 @@ export default function PPAResultPage() {
   });
   const [emailSubject, setEmailSubject] = useState('');
   const [emailSent, setEmailSent] = useState(false);
+
+  const htmlQuote = generateHTMLQuote(userData, suggestedServices, totalEstimatedCost, allFieldsTrue);
 
   // Your Google Apps Script Web App URL
   const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzChLctjwFjJ8Btyg0J17WuXj91slxpsyPsRDMd9ffc9CPr67h472gvxBlYqG7DpQVL5Q/exec";
@@ -130,45 +131,9 @@ export default function PPAResultPage() {
         calculateTotalCost(suggestedServices);
       }
       
-      // Generate mailto link when services are loaded
-      generateMailtoLink(suggestedServices);
-      
     } catch (error) {
       console.error('Error loading suggested services:', error);
     }
-  };
-
-  // Generate mailto link
-  const generateMailtoLink = (services) => {
-    const subject = encodeURIComponent(emailSubject);
-    const userName = userData.name || 'Customer';
-    
-    let body = `Dear ${userName},\n\n`;
-    body += allFieldsTrue 
-      ? 'Congratulations! You qualify for energy efficiency support. Here is your personalized quote:\n\n'
-      : 'While you don\'t qualify for the full scheme, here are our recommendations to improve your energy efficiency:\n\n';
-    
-    if (services.length > 0) {
-      services.forEach((service, index) => {
-        body += `${index + 1}. ${service.title}\n`;
-        if (service.price) {
-          body += `   Estimated Cost: ${service.price}\n`;
-        }
-        if (service.description) {
-          body += `   ${service.description.substring(0, 150)}...\n`;
-        }
-        body += '\n';
-      });
-      
-      if (totalEstimatedCost) {
-        body += `Total Estimated Investment: ${totalEstimatedCost}\n\n`;
-      }
-    }
-    
-    body += 'Best regards,\nEnergy Efficiency Team';
-    
-    const mailto = `mailto:${userData.email}?subject=${subject}&body=${encodeURIComponent(body)}`;
-    setMailtoLink(mailto);
   };
 
   // Calculate total estimated cost from services
@@ -245,103 +210,9 @@ export default function PPAResultPage() {
     } catch (error) {
       console.error('Error sending email:', error);
       setEmailStatus('Error - using fallback');
-      
-      // Fallback 1: Try using Google Apps Script with GET parameters
-      setTimeout(() => {
-        sendEmailViaGASGetFallback();
-      }, 1000);
+
     } finally {
       setSendingEmail(false);
-    }
-  };
-
-  // Fallback method using GET (for URL length limitations, use POST above)
-  const sendEmailViaGASGetFallback = () => {
-    try {
-      const htmlContent = generateHTMLQuote(userData, suggestedServices, totalEstimatedCost, allFieldsTrue);
-      
-      // Create a form with GET method
-      const form = document.createElement('form');
-      form.method = 'GET';
-      form.action = GOOGLE_APPS_SCRIPT_URL;
-      form.target = '_blank';
-      
-      // Add parameters - note: GET has URL length limitations
-      const params = {
-        to: userData.email,
-        subject: encodeURIComponent(emailSubject.substring(0, 100)), // Truncate for URL
-        name: encodeURIComponent(userData.name.substring(0, 50))
-      };
-      
-      Object.keys(params).forEach(key => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = params[key];
-        form.appendChild(input);
-      });
-      
-      document.body.appendChild(form);
-      form.submit();
-      document.body.removeChild(form);
-      
-      alert('Email request sent via fallback method. Please check your email.');
-      setEmailSent(true);
-      
-    } catch (error) {
-      console.error('Fallback also failed:', error);
-      
-      // Final fallback: Use mailto link
-      if (mailtoLink) {
-        window.location.href = mailtoLink;
-        setEmailSent(true);
-      } else {
-        alert('Could not send email. Please copy your quote manually.');
-      }
-    }
-  };
-
-  // Generate and download HTML quote
-  const generateAndDownloadHTML = () => {
-    setGeneratingPDF(true);
-    
-    try {
-      // Generate HTML quote
-      const htmlQuote = generateHTMLQuote(userData, suggestedServices, totalEstimatedCost, allFieldsTrue);
-      
-      // Create a blob and download
-      const blob = new Blob([htmlQuote], { type: 'text/html' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Energy_Efficiency_Quote_${userData.name || 'Customer'}.html`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-      
-      alert('Quote downloaded successfully!');
-      
-    } catch (error) {
-      console.error('Error generating quote:', error);
-      alert('Error generating quote. Please try again or use the email option.');
-    } finally {
-      setGeneratingPDF(false);
-    }
-  };
-
-  // View HTML quote in new tab
-  const viewHTMLQuote = () => {
-    try {
-      const htmlQuote = generateHTMLQuote(userData, suggestedServices, totalEstimatedCost, allFieldsTrue);
-      const blob = new Blob([htmlQuote], { type: 'text/html' });
-      const url = window.URL.createObjectURL(blob);
-      window.open(url, '_blank');
-      // Don't revoke URL immediately as the new tab needs it
-      setTimeout(() => window.URL.revokeObjectURL(url), 1000);
-    } catch (error) {
-      console.error('Error viewing quote:', error);
-      alert('Error displaying quote. Please try downloading instead.');
     }
   };
 
@@ -405,6 +276,9 @@ export default function PPAResultPage() {
     },
   };
 
+  const htmlEligibility = generateHTMLEligibilityResult({userData, verificationConfig, suggestedServices, dataVerified, allFieldsTrue, primaryReason});
+
+
   return (
     <>
       <Header />
@@ -454,15 +328,10 @@ export default function PPAResultPage() {
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-700 mr-2"></div>
                   Sending quote to your email...
                 </div>
-              ) : emailSent ? (
+              ) : emailSent && (
                 <div className="inline-flex items-center px-4 py-2 bg-green-100 text-green-700 rounded-lg">
                   <FaEnvelope className="w-4 h-4 mr-2" />
                   Quote sent! Check your inbox.
-                </div>
-              ) : (
-                <div className="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg">
-                  <FaPaperPlane className="w-4 h-4 mr-2" />
-                  Ready to send your personalized quote
                 </div>
               )}
             </div>
@@ -488,31 +357,12 @@ export default function PPAResultPage() {
                 ) : emailSent ? (
                   <>
                     <FaEnvelope className="w-5 h-5 mr-3" />
-                    Resend Email
+                    Send Email
                   </>
                 ) : (
                   <>
                     <FaPaperPlane className="w-5 h-5 mr-3" />
                     Send Quote via Email
-                  </>
-                )}
-              </button>
-              
-              {/* HTML Download Button */}
-              <button 
-                onClick={generateAndDownloadHTML}
-                disabled={generatingPDF || suggestedServices.length === 0}
-                className="px-8 py-4 border border-green-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors duration-200 flex rounded-xl items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {generatingPDF ? (
-                  <>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-700 mr-3"></div>
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <FaFilePdf className="w-5 h-5 mr-3" />
-                    Download Quote (HTML)
                   </>
                 )}
               </button>
@@ -540,27 +390,6 @@ export default function PPAResultPage() {
               </p>
             )}
 
-            {/* Mailto Link as Fallback */}
-            {mailtoLink && userData.email && (
-              <div className="mt-4">
-                <a 
-                  href={mailtoLink}
-                  className="text-blue-600 hover:text-blue-800 text-sm underline"
-                >
-                  Or use standard email client
-                </a>
-              </div>
-            )}
-
-            <div className="mt-6">
-              <button 
-                onClick={viewHTMLQuote}
-                className="text-green-600 hover:text-green-800 font-medium flex items-center justify-center mx-auto"
-              >
-                <FaClipboardList className="w-4 h-4 mr-2" />
-                View Online Quote
-              </button>
-            </div>
           </div>
         </section>
 
@@ -718,6 +547,14 @@ export default function PPAResultPage() {
           </div>
         </section>
       </div>
+      
+        <div 
+          dangerouslySetInnerHTML={{ __html: htmlQuote }}
+        />
+
+        <div 
+          dangerouslySetInnerHTML={{ __html: htmlEligibility }}
+        />
 
       <Footer />
     </>
