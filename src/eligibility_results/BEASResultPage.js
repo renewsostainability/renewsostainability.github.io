@@ -721,13 +721,13 @@ export default function BEASResultPage() {
         </section>
       </div>
 
-       <div 
+       {/* <div 
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
 
         <div 
           dangerouslySetInnerHTML={{ __html: htmlEligibility }}
-        />
+        /> */}
 
       <Footer />
     </>

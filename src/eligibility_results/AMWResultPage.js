@@ -698,13 +698,13 @@ export default function AMWResultPage() {
         </section>
       </div>
 
-      <div 
+      {/* <div 
           dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
 
         <div 
           dangerouslySetInnerHTML={{ __html: htmlEligibility }}
-        />
+        /> */}
 
       <Footer />
     </>
