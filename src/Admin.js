@@ -18,37 +18,37 @@ const ppa_dom_services = [
     title: 'Loft Insulation', 
     description: 'Install 270mm thick loft insulation to prevent heat loss through the roof.',
     url: 'https://energysavingtrust.org.uk/advice/loft-insulation/',
-    price: '£800 - £1,500'
+    price: 800
   },
   { 
     title: 'LED Lighting', 
     description: 'Replace all halogen and incandescent bulbs with LED alternatives.',
     url: 'https://energysavingtrust.org.uk/advice/lighting/',
-    price: '£200 - £800'
+    price: 200
   },
   { 
     title: 'Cavity Wall Insulation', 
     description: 'Fill cavity walls with insulation material to reduce heat transfer.',
     url: 'https://energysavingtrust.org.uk/advice/cavity-wall-insulation/',
-    price: '£1,500 - £3,000'
+    price: 1200
   },
   { 
     title: 'Smart Heating Controls', 
     description: 'Install smart thermostats and heating zone controls for better efficiency.',
     url: 'https://energysavingtrust.org.uk/advice/smart-heating-controls/',
-    price: '£300 - £1,200'
+    price: 250
   },
   { 
     title: 'Solar Panel Installation', 
     description: 'Install photovoltaic panels to generate renewable electricity.',
     url: 'https://energysavingtrust.org.uk/advice/solar-panels/',
-    price: '£4,000 - £8,000'
+    price: 5000
   },
   { 
     title: 'Water Efficiency Measures', 
     description: 'Install water-saving devices and improve hot water system efficiency.',
     url: 'https://energysavingtrust.org.uk/advice/water-saving/',
-    price: '£500 - £2,000'
+    price: 150
   }
 ];
 
@@ -57,76 +57,82 @@ const beas_dom_services = [
     title: 'Solar PV Installation', 
     description: 'Install photovoltaic panels to generate renewable electricity and reduce grid dependency.',
     url: 'https://www.cibse.org/renewables/solar-pv',
-    price: '£20,000 - £50,000'
+    price: 25000
   },
   { 
     title: 'HVAC System Upgrade', 
     description: 'Replace old heating and cooling systems with high-efficiency models and smart controls.',
     url: 'https://www.cibse.org/hvac-systems',
-    price: '£15,000 - £40,000'
+    price: 15000
   },
   { 
     title: 'LED Lighting Retrofit', 
     description: 'Upgrade to energy-efficient LED lighting throughout your commercial premises.',
     url: 'https://www.cibse.org/lighting',
-    price: '£5,000 - £20,000'
+    price: 7000
   },
   { 
     title: 'Building Insulation', 
     description: 'Improve roof, wall, and floor insulation to reduce heating and cooling costs.',
     url: 'https://www.cibse.org/insulation',
-    price: '£10,000 - £30,000'
+    price: 12000
   },
   { 
     title: 'Water Efficiency Systems', 
     description: 'Install water-saving devices and efficient hot water systems for industrial processes.',
     url: 'https://www.cibse.org/water-efficiency',
-    price: '£8,000 - £25,000'
+    price: 4000
   },
   { 
     title: 'Energy Monitoring', 
     description: 'Implement smart energy monitoring systems to track and optimize energy usage.',
     url: 'https://www.cibse.org/energy-monitoring',
-    price: '£3,000 - £10,000'
+    price: 6000
   }
 ];
+
+const formattedPrice = (price) =>
+  price
+    ? new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(price)
+    : '-';
+
 
 const amw_dom_services = [
   { 
     title: 'Solar PV Installation', 
     description: 'Install photovoltaic panels to generate renewable electricity and reduce grid dependency with zero upfront cost.',
     url: 'https://www.ppa-uk.org/solar-ppa',
-    price: '£20,000 - £50,000'
+    price: 20000
   },
   { 
     title: 'HVAC System Upgrade', 
     description: 'Replace old heating and cooling systems with high-efficiency models and smart controls for better energy management.',
     url: 'https://www.ppa-uk.org/hvac-ppa',
-    price: '£30,000 - £50,000'
+    price: 30000
   },
   { 
     title: 'LED Lighting Retrofit', 
     description: 'Upgrade to energy-efficient LED lighting throughout your commercial premises with significant energy savings.',
     url: 'https://www.ppa-uk.org/lighting-ppa',
-    price: '£20,000 - £50,000'
+    price: 15000
   },
   { 
     title: 'Roof Replacement', 
     description: 'Comprehensive roof replacement included in PPA, ensuring optimal conditions for solar panel installation.',
     url: 'https://www.ppa-uk.org/roof-ppa',
-    price: '£40,000 - £50,000'
+    price: 50000
   },
   { 
     title: 'EV Charging Infrastructure', 
     description: 'Install electric vehicle charging stations with solar-powered carports for sustainable transportation.',
     url: 'https://www.ppa-uk.org/ev-charging-ppa',
-    price: '£10,000 - £30,000'
+    price: 30000
   },
   { 
     title: 'Carbon Credit Generation', 
     description: 'Generate carbon credits through renewable energy production and energy efficiency improvements.',
     url: 'https://www.ppa-uk.org/carbon-credits',
-    price: '£5,000 - £15,000'
+    price: 15000
   }
 ];
 
@@ -344,12 +350,52 @@ export default function Admin() {
   // Get tab name
   const getTabName = (tab) => {
     switch(tab) {
-      case 'amw': return 'AMW Services';
-      case 'ppa': return 'PPA Services';
-      case 'beas': return 'BEAS Services';
+      case 'amw': return 'Services';
+      case 'ppa': return 'Services';
+      case 'beas': return 'Services';
       default: return tab.toUpperCase();
     }
   };
+
+  useEffect(() => {
+    const hasAMW = localStorage.getItem('admin_amw_services');
+    const hasPPA = localStorage.getItem('admin_ppa_services');
+    const hasBEAS = localStorage.getItem('admin_beas_services');
+
+    // Only seed if ALL are missing (first-time load)
+    if (!hasAMW && !hasPPA && !hasBEAS) {
+      const seededData = {
+        amw: amw_dom_services.map((service, index) => ({
+          id: `amw-default-${index}`,
+          title: service.title,
+          description: service.description,
+          url: service.url,
+          price: service.price
+        })),
+        ppa: ppa_dom_services.map((service, index) => ({
+          id: `ppa-default-${index}`,
+          title: service.title,
+          description: service.description,
+          url: service.url,
+          price: service.price
+        })),
+        beas: beas_dom_services.map((service, index) => ({
+          id: `beas-default-${index}`,
+          title: service.title,
+          description: service.description,
+          url: service.url,
+          price: service.price
+        }))
+      };
+
+      localStorage.setItem('admin_amw_services', JSON.stringify(seededData.amw));
+      localStorage.setItem('admin_ppa_services', JSON.stringify(seededData.ppa));
+      localStorage.setItem('admin_beas_services', JSON.stringify(seededData.beas));
+
+      setServices(seededData);
+    }
+  }, []);
+
   
   return (
     <>
@@ -405,7 +451,8 @@ export default function Admin() {
                   <div className="mt-8 pt-6 border-t border-gray-200">
                     <button
                       onClick={handleLoadDefaults}
-                      className="w-full flex items-center justify-center px-4 py-3 bg-gray-800 text-white font-medium rounded-lg hover:bg-gray-900 transition-all duration-200 shadow-sm"
+                      
+                      className="w-full flex items-center justify-center px-4 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 px-6 rounded-xl shadow-lg flex items-center gap-2"
                     >
                       <FaDownload className="w-4 h-4 mr-2" />
                       Load Default Services
@@ -521,7 +568,7 @@ export default function Admin() {
                                 <FaDollarSign className="w-4 h-4" />
                               </span>
                               <input
-                                type="text"
+                                type="number"
                                 name="price"
                                 value={formData.price}
                                 onChange={handleInputChange}
@@ -534,7 +581,7 @@ export default function Admin() {
                         <div className="flex space-x-4 pt-4">
                           <button
                             type="submit"
-                            className="flex-1 bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-900 hover:to-black text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center transition-all duration-300 shadow-sm hover:shadow-md"
+                            className="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center transition-all duration-300 shadow-sm hover:shadow-md"
                           >
                             <FaSave className="w-5 h-5 mr-2" />
                             {editingId ? 'Update Service' : 'Add Service'}
@@ -587,7 +634,7 @@ export default function Admin() {
                             </p>
                             <button
                               onClick={handleLoadDefaults}
-                              className="px-4 py-2 bg-gray-800 text-white font-medium rounded-lg hover:bg-gray-900 transition-colors"
+                              className="flex-1 bg-gradient-to-r from-green-500 w-full to-emerald-600 text-white font-medium py-3 px-6 rounded-lg flex items-center justify-center transition-all duration-300 shadow-sm hover:shadow-md"
                             >
                               Load Default Services
                             </button>
@@ -595,21 +642,15 @@ export default function Admin() {
                         ) : (
                           <div className="divide-y divide-gray-200">
                             {services[activeTab].map((service) => (
-                              <div 
-                                key={service.id} 
+                              <div
+                                key={service.id}
                                 className={`p-6 hover:bg-gray-50 transition-colors duration-200 ${
                                   editingId === service.id ? 'bg-gray-50 border-l-4 border-l-gray-500' : ''
                                 }`}
                               >
-                                <div className="flex justify-between items-start mb-3">
-                                  <div>
-                                    <h4 className="text-lg font-medium text-gray-900">
-                                      {service.title}
-                                    </h4>
-                                    <p className="text-gray-600 mt-2">
-                                      {service.description}
-                                    </p>
-                                  </div>
+                                {/* Header: Title and Action Buttons */}
+                                <div className="flex justify-between items-center mb-3">
+                                  <h4 className="text-lg font-medium text-gray-900">{service.title}</h4>
                                   <div className="flex space-x-2">
                                     <button
                                       onClick={() => handleEdit(service)}
@@ -627,34 +668,36 @@ export default function Admin() {
                                     </button>
                                   </div>
                                 </div>
-                                
-                                <div className="mt-4">
-                                    <div className="grid grid-cols-2 gap-6">
-                                        <div className="flex items-center">
-                                            <span className="text-sm text-gray-600">URL:</span>
-                                            {service.url ? (
-                                                <a
-                                                href={service.url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="ml-2 text-green-600 hover:text-green-800 flex items-center text-sm"
-                                                >
-                                                <FaLink className="w-3 h-3 mr-1" />
-                                                Link
-                                                </a>
-                                            ) : null}
-                                        </div>
 
-                                        <div>
-                                            <span className="text-sm text-gray-600">Price:</span>
-                                            <span className="ml-2 text-gray-700 text-sm">
-                                            {service.price || null}
-                                            </span>
-                                        </div>
+                                {/* Full-width Details */}
+                                <div className="mt-2 space-y-2">
+                                  <p className="text-gray-600">{service.description}</p>
+                                  <div className='flex'>
+                                    {service.url && (
+                                      <div className="flex items-center mr-4">
+                                        <span className="text-sm text-gray-600">URL:</span>
+                                        <a
+                                          href={service.url}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="ml-2 text-green-600 hover:text-green-800 flex items-center text-sm"
+                                        >
+                                          <FaLink className="w-3 h-3 mr-1" />
+                                          Link
+                                        </a>
+                                      </div>
+                                    )}
+
+                                    {service.price && (
+                                      <div>
+                                        <span className="text-sm text-gray-600">Price:</span>
+                                        <span className="ml-2 text-gray-700 text-sm">{formattedPrice(service.price) || '-'}</span>
+                                      </div>
+                                    )}
                                     </div>
                                 </div>
-                            </div>
-                            ))} 
+                              </div>
+                            ))}
                           </div>
                         )}
                       </div>

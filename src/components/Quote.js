@@ -2,7 +2,6 @@
 export const generateHTMLQuote = (
   userData,
   suggestedServices,
-  totalEstimatedCost,
   allFieldsTrue
 ) => {
   const today = new Date().toLocaleDateString('en-GB', {
@@ -13,6 +12,19 @@ export const generateHTMLQuote = (
   });
 
   const quoteNumber = `EEQ-${Date.now().toString().slice(-8)}`;
+  const formattedPrice = (price) =>
+    price
+      ? new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(price)
+      : '-';
+
+    let total = 0;
+
+    suggestedServices.forEach(service => {
+      const price = service.price;
+      if (price) {
+        total += Number(price); // ensure numeric addition
+      }
+    });
 
   return `
 <!DOCTYPE html>
@@ -276,7 +288,7 @@ export const generateHTMLQuote = (
                 ${service.category ? `<div class="service-category">${service.category}</div>` : ''}
               </td>
               <td>${service.description}</td>
-              <td class="price">${service.price || 'Contact for quote'}</td>
+              <td class="price">${formattedPrice(service.price) || 'Contact for quote'}</td>
             </tr>
           `).join('')}
         </tbody>
@@ -287,7 +299,7 @@ export const generateHTMLQuote = (
               <strong>Total Estimated Investment</strong>
             </td>
             <td class="price">
-              ${totalEstimatedCost || 'Contact for quote'}
+              ${formattedPrice(total) || 'Contact for quote'}
             </td>
           </tr>
         </tfoot>

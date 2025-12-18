@@ -39,6 +39,7 @@ export default function Header() {
     { id: "products", label: "Services" },
     { id: "why-us", label: "Why RENEW" },
     { id: "how-it-works", label: "How It Works" },
+    { id: "admin", label: "Admin" },
   ];
 
   const shouldShowMobileMenu = isClient && isMenuOpen;
@@ -91,23 +92,30 @@ export default function Header() {
             {/* Desktop Nav */}
             <nav className="hidden md:block">
               <ul className="flex gap-8">
-                {navItems.map((item) => (
-                  <li key={item.id}>
-                    <button
-                      className="text-gray-500 font-medium hover:text-green-600 transition"
-                      onClick={() => handleNavigation(item.id)}
-                    >
-                      {item.label}
-                    </button>
-                  </li>
-                ))}
-                <li>
-                  <a href="#admin" className="text-gray-500 font-medium hover:text-green-600 transition">
-                      Admin
-                  </a>
-                </li>
+                {navItems.map((item) =>
+                  item.id === 'admin' ? (
+                    <li key={item.id}>
+                      <a
+                        href="#admin"
+                        className="text-gray-500 font-medium hover:text-green-600 transition"
+                      >
+                        Admin
+                      </a>
+                    </li>
+                  ) : (
+                    <li key={item.id}>
+                      <button
+                        className="text-gray-500 font-medium hover:text-green-600 transition"
+                        onClick={() => handleNavigation(item.id)}
+                      >
+                        {item.label}
+                      </button>
+                    </li>
+                  )
+                )}
               </ul>
             </nav>
+
 
             {/* Action Buttons */}
             <div className="flex items-center gap-4">
@@ -158,23 +166,30 @@ export default function Header() {
             {/* Mobile Links */}
             <nav className="mb-8">
               <ul>
-                {navItems.map((item) => (
-                  <li key={item.id} className="mb-2">
-                    <button
-                      className="block w-full text-left p-4 text-gray-900 font-medium rounded-lg hover:bg-gray-50"
-                      onClick={() => handleNavigation(item.id)}
-                    >
-                      {item.label}
-                    </button>
-                  </li>
-                ))}
-                <li>
-                  <a href="#admin" className="text-gray-500 font-medium hover:text-green-600 transition">
-                      Admin
-                  </a>
-                </li>
+                {navItems.map((item) =>
+                  item.id === 'admin' ? (
+                    <li key={item.id} className="mb-2">
+                      <a
+                        href="#admin"
+                         className="block w-full text-left p-4 text-gray-900 font-medium rounded-lg hover:bg-gray-50"
+                      >
+                        Admin
+                      </a>
+                    </li>
+                  ) : (
+                    <li key={item.id} className="mb-2">
+                      <button
+                        className="block w-full text-left p-4 text-gray-900 font-medium rounded-lg hover:bg-gray-50"
+                        onClick={() => handleNavigation(item.id)}
+                      >
+                        {item.label}
+                      </button>
+                    </li>
+                  )
+                )}
               </ul>
             </nav>
+
 
             {isHome ? (
               <button

@@ -42,7 +42,7 @@ const validateSector = (sector) => {
   return '';
 };
 
-const validateOfficerName = (name) => {
+const validatefullName = (name) => {
   if (!name.trim()) {
     return 'Officer name is required';
   }
@@ -69,18 +69,14 @@ const validateUKPostcode = (postcode) => {
   return '';
 };
 
-const validateContact = (contact) => {
-  if (!contact.trim()) {
-    return 'Contact information is required';
+const validateEmail = (email) => {
+  if (!email.trim()) {
+    return 'Email is required';
   }
   
-  // Check if it's an email
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  // Check if it's a UK phone number
-  const phoneRegex = /^(\+44\s?7\d{3}|\(?07\d{3}\)?)\s?\d{3}\s?\d{3}$/;
-  
-  if (!emailRegex.test(contact) && !phoneRegex.test(contact.replace(/\s/g, ''))) {
-    return 'Please enter a valid email or UK phone number';
+  if (!emailRegex.test(email)) {
+    return 'Please enter a valid email address';
   }
   return '';
 };
@@ -93,9 +89,9 @@ export default function BEAMandatoryForm() {
       return {
         companyName: '',
         sector: '',
-        officerName: '',
+        fullName: '',
         postcode: '',
-        contact: '',
+        email: '',
         termsAccepted: false
       };
     }
@@ -103,9 +99,9 @@ export default function BEAMandatoryForm() {
     return {
       companyName: localStorage.getItem('companyName') || '',
       sector: localStorage.getItem('sector') || '',
-      officerName: localStorage.getItem('officerName') || '',
+      fullName: localStorage.getItem('fullName') || '',
       postcode: localStorage.getItem('postcode') || '',
-      contact: localStorage.getItem('contact') || '',
+      email: localStorage.getItem('email') || '',
       termsAccepted: JSON.parse(localStorage.getItem('termsAccepted') || 'false')
     };
   };
@@ -114,9 +110,9 @@ export default function BEAMandatoryForm() {
     return {
       companyName: validateCompanyName(formData.companyName) === '',
       sector: validateSector(formData.sector) === '',
-      officerName: validateOfficerName(formData.officerName) === '',
+      fullName: validatefullName(formData.fullName) === '',
       postcode: validateUKPostcode(formData.postcode) === '',
-      contact: validateContact(formData.contact) === ''
+      email: validateEmail(formData.email) === ''
     };
   };
 
@@ -124,9 +120,9 @@ export default function BEAMandatoryForm() {
     return {
       companyName: validateCompanyName(formData.companyName),
       sector: validateSector(formData.sector),
-      officerName: validateOfficerName(formData.officerName),
+      fullName: validatefullName(formData.fullName),
       postcode: validateUKPostcode(formData.postcode),
-      contact: validateContact(formData.contact)
+      email: validateEmail(formData.email)
     };
   };
 
@@ -164,16 +160,16 @@ export default function BEAMandatoryForm() {
         error = validateSector(newValue);
         isValid = !error;
         break;
-      case 'officerName':
-        error = validateOfficerName(newValue);
+      case 'fullName':
+        error = validatefullName(newValue);
         isValid = !error;
         break;
       case 'postcode':
         error = validateUKPostcode(newValue);
         isValid = !error;
         break;
-      case 'contact':
-        error = validateContact(newValue);
+      case 'email':
+        error = validateEmail(newValue);
         isValid = !error;
         break;
       default:
@@ -198,9 +194,9 @@ export default function BEAMandatoryForm() {
     const errors = {
       companyName: validateCompanyName(formData.companyName),
       sector: validateSector(formData.sector),
-      officerName: validateOfficerName(formData.officerName),
+      fullName: validatefullName(formData.fullName),
       postcode: validateUKPostcode(formData.postcode),
-      contact: validateContact(formData.contact)
+      email: validateEmail(formData.email)
     };
 
     setValidationErrors(errors);
@@ -213,9 +209,9 @@ export default function BEAMandatoryForm() {
       // Save all data to localStorage
       localStorage.setItem('companyName', formData.companyName);
       localStorage.setItem('sector', formData.sector);
-      localStorage.setItem('officerName', formData.officerName);
+      localStorage.setItem('fullName', formData.fullName);
       localStorage.setItem('postcode', formData.postcode);
-      localStorage.setItem('contact', formData.contact);
+      localStorage.setItem('email', formData.email);
       localStorage.setItem('termsAccepted', JSON.stringify(formData.termsAccepted));
       
       // Proceed with form submission
@@ -352,9 +348,9 @@ export default function BEAMandatoryForm() {
                   </h2>
 
                   <div className="space-y-6">
-                    {/* Officer Name */}
+                    {/* Full Name */}
                     <div>
-                      <label htmlFor="officerName" className="block text-sm font-semibold text-gray-700 mb-3">
+                      <label htmlFor="fullName" className="block text-sm font-semibold text-gray-700 mb-3">
                         Authorised Company Officer
                       </label>
                       <p className="text-gray-600 text-sm mb-4">
@@ -363,30 +359,30 @@ export default function BEAMandatoryForm() {
                       <div className="relative">
                         <input
                           type="text"
-                          id="officerName"
-                          name="officerName"
-                          value={formData.officerName}
+                          id="fullName"
+                          name="fullName"
+                          value={formData.fullName}
                           onChange={handleChange}
                           onKeyUp={(e) => handleChange(e)}
                           className={`w-full px-4 py-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-white text-gray-900 text-lg ${
-                            fieldValidity.officerName ? 'border-gray-300' : 'border-red-500'
+                            fieldValidity.fullName ? 'border-gray-300' : 'border-red-500'
                           }`}
                           required
                         />
                         <div className="absolute right-4 top-4 flex items-center">
-                          {fieldValidity.officerName && formData.officerName ? (
+                          {fieldValidity.fullName && formData.fullName ? (
                             <FaCheck className="w-5 h-5 text-green-500" />
-                          ) : !fieldValidity.officerName && formData.officerName ? (
+                          ) : !fieldValidity.fullName && formData.fullName ? (
                             <FaTimes className="w-5 h-5 text-red-500" />
                           ) : (
                             <FaUser className="w-5 h-5 text-gray-400" />
                           )}
                         </div>
                       </div>
-                      {validationErrors.officerName && (
+                      {validationErrors.fullName && (
                         <p className="text-red-500 text-sm mt-2 flex items-center">
                           <FaTimes className="w-3 h-3 mr-1" />
-                          {validationErrors.officerName}
+                          {validationErrors.fullName}
                         </p>
                       )}
                     </div>
@@ -427,43 +423,43 @@ export default function BEAMandatoryForm() {
                       )}
                     </div>
 
-                    {/* Contact */}
+                    {/* Eamil */}
                     <div>
-                      <label htmlFor="contact" className="block text-sm font-semibold text-gray-700 mb-3">
+                      <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-3">
                         Email or Phone Number
                       </label>
                       <p className="text-gray-600 text-sm mb-4">
-                        We'll contact you at this address or number to discuss your PPA options
+                        We'll email you on this email address to discuss your PPA options
                       </p>
                       <div className="relative">
                         <input
-                          type="text"
-                          id="contact"
-                          name="contact"
-                          value={formData.contact}
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={formData.email}
                           onChange={handleChange}
                           onKeyUp={(e) => handleChange(e)}
                           className={`w-full px-4 py-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-white text-gray-900 text-lg ${
-                            fieldValidity.contact ? 'border-gray-300' : 'border-red-500'
+                            fieldValidity.email ? 'border-gray-300' : 'border-red-500'
                           }`}
                           required
                         />
                         <div className="absolute right-4 top-4 flex items-center">
-                          {fieldValidity.contact && formData.contact ? (
+                          {fieldValidity.email && formData.email ? (
                             <FaCheck className="w-5 h-5 text-green-500" />
-                          ) : !fieldValidity.contact && formData.contact ? (
+                          ) : !fieldValidity.email && formData.email ? (
                             <FaTimes className="w-5 h-5 text-red-500" />
-                          ) : formData.contact.includes('@') ? (
+                          ) : formData.email.includes('@') ? (
                             <FaEnvelope className="w-5 h-5 text-gray-400" />
                           ) : (
                             <FaPhone className="w-5 h-5 text-gray-400" />
                           )}
                         </div>
                       </div>
-                      {validationErrors.contact && (
+                      {validationErrors.email && (
                         <p className="text-red-500 text-sm mt-2 flex items-center">
                           <FaTimes className="w-3 h-3 mr-1" />
-                          {validationErrors.contact}
+                          {validationErrors.email}
                         </p>
                       )}
                     </div>
