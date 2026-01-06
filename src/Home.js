@@ -2,13 +2,15 @@ import { useEffect, useState } from 'react';
 
 import Header from './homepage/Header';
 import Hero from './homepage/Hero';
-import Products from './homepage/Products';
+import Products from './homepage/Products.js';
 import WhyUs from './homepage/WhyUs';
 import HowItWorks from './homepage/HowItWorks';
 import Partners from './homepage/Partners';
 import FAQ from './homepage/FAQ';
 import Contact from './homepage/Contact';
 import Footer from './homepage/Footer';
+import About from './homepage/About';
+import Benefits from './homepage/Benefits';
 
 import './custom-css.css';
 
@@ -39,12 +41,14 @@ export default function Home() {
         <Header />
         <main>
           <section id="home"><Hero /></section>
-          <section id="products" className="section section-bg"><Products /></section>
+          <section id="products" className="section-bg"><Products /></section>
+          <section id="about-us" className="section section-bg-alt"><About /></section>
           <section id="why-us" className="section"><WhyUs /></section>
           <section id="how-it-works" className="section section-bg-alt"><HowItWorks /></section>
+          <section id="benefits" className="section"><Benefits /></section>
           <section id="partners" className="section section-bg"><Partners /></section>
-          <section id="faq" className="section section-bg-alt"><FAQ /></section>
-          <section id="contact" className="section section-bg"><Contact /></section>
+          {/* <section id="faq" className="section section-bg-alt"><FAQ /></section> */}
+          <section id="contact" className="section section-bg-alt"><Contact /></section>
         </main>
         <Footer />
       </div>

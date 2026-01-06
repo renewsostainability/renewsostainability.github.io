@@ -35,10 +35,12 @@ export default function Header() {
   };
 
   const navItems = [
-    { id: "home", label: "Home" },
-    { id: "products", label: "Services" },
-    { id: "why-us", label: "Why RENEW" },
+    { id: "about-us", label: "About Us" },
     { id: "how-it-works", label: "How It Works" },
+    { id: "benefits", label: "Benefits" },
+    { id: "products", label: "Marketplace" },
+    { id: "why-us", label: "Why Us" },
+    { id: "login", label: "Login" },
     { id: "admin", label: "Admin" },
   ];
 

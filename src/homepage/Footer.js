@@ -73,18 +73,10 @@ export default function Footer() {
                   </li>
                   <li>
                     <a 
-                      onClick={() => window.location.href = '/#products'} 
+                      onClick={() => window.location.href = '/#about-us'} 
                       className="text-gray-300 hover:text-green-500 cursor-pointer transition-all duration-300 flex items-center hover:translate-x-1"
                     >
-                      Our Solutions
-                    </a>
-                  </li>
-                  <li>
-                    <a 
-                      onClick={() => window.location.href = '/#why-us'} 
-                      className="text-gray-300 hover:text-green-500 cursor-pointer transition-all duration-300 flex items-center hover:translate-x-1"
-                    >
-                      Why RENEW
+                      About Us
                     </a>
                   </li>
                   <li>
@@ -93,6 +85,30 @@ export default function Footer() {
                       className="text-gray-300 hover:text-green-500 cursor-pointer transition-all duration-300 flex items-center hover:translate-x-1"
                     >
                       How It Works
+                    </a>
+                  </li>
+                  <li>
+                    <a 
+                      onClick={() => window.location.href = '/#products'} 
+                      className="text-gray-300 hover:text-green-500 cursor-pointer transition-all duration-300 flex items-center hover:translate-x-1"
+                    >
+                      Benefits
+                    </a>
+                  </li>
+                  <li>
+                    <a 
+                      onClick={() => window.location.href = '/#why-us'} 
+                      className="text-gray-300 hover:text-green-500 cursor-pointer transition-all duration-300 flex items-center hover:translate-x-1"
+                    >
+                      Why Us
+                    </a>
+                  </li>
+                  <li>
+                    <a 
+                      onClick={() => window.location.href = '/#login'} 
+                      className="text-gray-300 hover:text-green-500 cursor-pointer transition-all duration-300 flex items-center hover:translate-x-1"
+                    >
+                      Login
                     </a>
                   </li>
                 </ul>
@@ -108,7 +124,7 @@ export default function Footer() {
                       onClick={(e) => { e.preventDefault(); handleNavigation('products') }}
                       className="text-gray-300 hover:text-green-500 transition-all duration-300 flex items-center hover:translate-x-1"
                     >
-                      Power Purchase Agreements
+                      Renewable Energy and Energy Efficiency Schemes
                     </a>
                   </li>
                   <li>
@@ -117,7 +133,7 @@ export default function Footer() {
                       onClick={(e) => { e.preventDefault(); handleNavigation('products') }}
                       className="text-gray-300 hover:text-green-500 transition-all duration-300 flex items-center hover:translate-x-1"
                     >
-                      Energy Savings Grants
+                      Energy Savings Grants and Government Support
                     </a>
                   </li>
                   <li>
@@ -126,7 +142,7 @@ export default function Footer() {
                       onClick={(e) => { e.preventDefault(); handleNavigation('products') }}
                       className="text-gray-300 hover:text-green-500 transition-all duration-300 flex items-center hover:translate-x-1"
                     >
-                      Government Support
+                      Sustainability Support and Consulting
                     </a>
                   </li>
                   <li>
@@ -135,7 +151,16 @@ export default function Footer() {
                       onClick={(e) => { e.preventDefault(); handleNavigation('contact') }}
                       className="text-gray-300 hover:text-green-500 transition-all duration-300 flex items-center hover:translate-x-1"
                     >
-                      Free Assessment
+                      Biodiversity and Ecosystem Support
+                    </a>
+                  </li>
+                  <li>
+                    <a 
+                      href="#" 
+                      onClick={(e) => { e.preventDefault(); handleNavigation('contact') }}
+                      className="text-gray-300 hover:text-green-500 transition-all duration-300 flex items-center hover:translate-x-1"
+                    >
+                      Circular Economy Practices
                     </a>
                   </li>
                 </ul>
@@ -148,10 +173,10 @@ export default function Footer() {
                   <li className="flex items-center gap-3">
                     <FaEnvelope className="text-green-500 w-4" />
                     <a 
-                      href="mailto:info@renew-energy.com" 
+                      href="mailto:renew@sostainability.co.uk" 
                       className="text-gray-300 hover:text-green-500 transition-colors duration-300"
                     >
-                      info@renew-energy.com
+                      renew@sostainability.co.uk
                     </a>
                   </li>
                   <li className="flex items-center gap-3">

@@ -12,7 +12,6 @@ export default function Contact() {
     name: '',
     email: '',
     phone: '',
-    propertyType: '',
     interest: '',
     message: ''
   })
@@ -33,7 +32,6 @@ export default function Contact() {
       name: '',
       email: '',
       phone: '',
-      propertyType: '',
       interest: '',
       message: ''
     })
@@ -83,24 +81,14 @@ export default function Contact() {
               <div>
                 <h4 className="font-semibold text-gray-900 mb-1">Email Us</h4>
                 <a 
-                  href="mailto:info@renew-energy.com" 
+                  href="mailto:renew@sostainability.co.uk" 
                   className="text-green-600 font-medium hover:text-green-700 transition-colors duration-300"
                 >
-                  info@renew-energy.com
+                  renew@sostainability.co.uk
                 </a>
               </div>
             </div>
-            
-            {/* Business Hours */}
-            <div className="flex items-center gap-4 p-6 bg-white rounded-lg shadow-sm border border-gray-200 transition-all duration-300 hover:translate-x-2 hover:shadow-md">
-              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center flex-shrink-0">
-                <FaClock className="text-white text-lg" />
-              </div>
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-1">Business Hours</h4>
-                <p className="text-gray-600 text-sm">Mon-Fri: 8:00 AM - 6:00 PM</p>
-              </div>
-            </div>
+          
           </div>
         </div>
 
@@ -108,59 +96,41 @@ export default function Contact() {
         <div className="bg-white p-8 lg:p-10 rounded-2xl shadow-xl border border-gray-200">
           <form onSubmit={handleSubmit}>
             {/* Name and Email Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div className="mb-6">
-                <input 
-                  type="text" 
-                  name="name"
-                  className="w-full px-4 py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-200 bg-white text-gray-900"
-                  placeholder="Full Name *" 
-                  value={formData.name}
-                  onChange={handleChange}
-                  required 
-                />
-              </div>
-              <div className="mb-6">
-                <input 
-                  type="email" 
-                  name="email"
-                  className="w-full px-4 py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-200 bg-white text-gray-900"
-                  placeholder="Email Address *" 
-                  value={formData.email}
-                  onChange={handleChange}
-                  required 
-                />
-              </div>
+            <div className="mb-6">
+              <input 
+                type="text" 
+                name="name"
+                className="w-full px-4 py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-200 bg-white text-gray-900"
+                placeholder="Full Name *" 
+                value={formData.name}
+                onChange={handleChange}
+                required 
+              />
+            </div>
+
+            <div className="mb-6">
+              <input 
+                type="email" 
+                name="email"
+                className="w-full px-4 py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-200 bg-white text-gray-900"
+                placeholder="Email Address *" 
+                value={formData.email}
+                onChange={handleChange}
+                required 
+              />
             </div>
             
-            {/* Phone and Property Type Row */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <div className="mb-6">
-                <input 
-                  type="tel" 
-                  name="phone"
-                  className="w-full px-4 py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-200 bg-white text-gray-900"
-                  placeholder="Phone Number *" 
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required 
-                />
-              </div>
-              <div className="mb-6">
-                <select 
-                  name="propertyType"
-                  className="w-full px-4 py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-200 bg-white text-gray-900 appearance-none"
-                  value={formData.propertyType}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Property Type *</option>
-                  <option value="residential">Residential Home</option>
-                  <option value="commercial">Commercial Building</option>
-                  <option value="industrial">Industrial Facility</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
+            {/* Phone Number */}
+            <div className="mb-6">
+              <input 
+                type="tel" 
+                name="phone"
+                className="w-full px-4 py-4 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-green-500 focus:ring-4 focus:ring-green-100 transition-all duration-200 bg-white text-gray-900"
+                placeholder="Phone Number *" 
+                value={formData.phone}
+                onChange={handleChange}
+                required 
+              />
             </div>
             
             {/* Interest Selection */}

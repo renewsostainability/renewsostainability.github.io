@@ -1,101 +1,154 @@
-import { FaArrowRight } from "react-icons/fa";
+import {
+  FaGlobe,
+  FaHandshake,
+  FaShieldAlt,
+  FaRocket,
+  FaBullseye,
+  FaLeaf,
+  FaArrowRight
+} from "react-icons/fa";
 
 export default function About() {
+  const sections = [
+    {
+      icon: <FaGlobe className="text-white text-2xl" />,
+      title: "What is RENEW",
+      content: "Renewable Energy and Net Emissions Workspace (RENEW) is a marketplace that connects users of decarbonization products and services with verified and reliable providers, while delivering a one-stop, customized dashboard for net-zero and sustainability progression. RENEW is a SOStainability product developed with support from the University of Staffordshire, the Newcastle-under-Lyme Borough Council, and the UK Shared Prosperity Fund (UKSPF).",
+      gradient: "from-blue-500 to-cyan-500"
+    },
+    {
+      icon: <FaHandshake className="text-white text-2xl" />,
+      title: "The RENEW Promise",
+      content: "RENEW bridges the gap between organisations seeking sustainability solutions and verified providers who offer them. It is a digital dashboard where businesses and other organisations in need seamlessly connect with verified sustainability products and service providers to accelerate their journey to net-zero, circular economy practices, and ESG excellence.",
+      gradient: "from-green-500 to-emerald-600"
+    },
+    {
+      icon: <FaShieldAlt className="text-white text-2xl" />,
+      title: "The RENEW Guarantee",
+      content: "RENEW empowers businesses and organisations with bespoke and actionable sustainability insights and then offers speedy access to trusted products and experts, enabling sustained progress from baseline to maturity and leadership in ESG practice.",
+      gradient: "from-amber-500 to-orange-500"
+    }
+  ];
+
+  const painPoints = [
+    "Aware of the need for sustainability, but don't know where to start.",
+    "Able to determine their sustainability baselines, but lack follow-up support.",
+    "Struggle to find reliable, pre-vetted product and service providers who can deliver measurable sustainability outcomes."
+  ];
+
   return (
-    <section className="about-section fix section-padding pb-0">
-      <div className="container">
-        <div className="about-wrapper-1 pt-0">
-          <div className="random-shape float-bob-x">
-            <img src="/index_files/random-shape.png" alt="random shape" />
-          </div>
-          <div className="star-shape float-bob-y">
-            <img src="/index_files/star.png" alt="star shape" />
-          </div>
+    <div className="container mx-auto px-4 py-16">
+      {/* Header Section */}
+      <div className="text-center mb-2">
+        <div className="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-full font-medium text-green-600 shadow-md mb-6">
+          <FaLeaf className="text-green-500" />
+          About RENEW
+        </div>
+      </div>
 
-          <div className="row g-4 align-items-center">
-            <div className="col-lg-6">
-              <div className="about-content">
-                <div className="section-title">
-                  <span className="wow fadeInUp">
-                    <img src="/index_files/star-2.png" alt="star" />About Me
-                  </span>
-
-                  <h2 className="wow fadeInUp" data-wow-delay=".2s">
-                    Solving Problems With <br /> <span>Intuitive Design</span>
-                  </h2>
-
-                  <p className="wow fadeInUp" data-wow-delay=".3s">
-                    I&apos;m a passionate Full Stack Developer with expertise in creating 
-                    digital experiences that are both beautiful and functional. 
-                    I believe in progress through innovation and creative problem-solving.
-                  </p>
-                </div>
-
-                <div className="client-reviews mt-4 mt-md-0">
-                  <div className="cr-item wow fadeInUp" data-wow-delay=".4s">
-                    <h2><span className="count">5</span>+</h2>
-                    <h6>Years <br />experience...</h6>
-                  </div>
-                  <div className="cr-item wow fadeInUp" data-wow-delay=".5s">
-                    <h2><span className="count">50</span>+</h2>
-                    <h6>Projects <br />Completed...</h6>
-                  </div>
-                  <div className="cr-item wow fadeInUp" data-wow-delay=".6s">
-                    <h2><span className="count">30</span>+</h2>
-                    <h6>Happy <br />Clients...</h6>
-                  </div>
-                </div>
-
-                <div className="about-button">
-                  <a 
-                    href="#" 
-                    className="theme-btn wow fadeInUp" 
-                    data-wow-delay=".7s"
-                    onClick={(e) => { 
-                      e.preventDefault(); 
-                      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }) 
-                    }}
-                  >
-                    Contact Me <FaArrowRight className="ml-2" />
-                  </a>
-
-                  <div className="phone wow fadeInUp" data-wow-delay=".8s">
-                    <div className="icon">
-                      <img src="/index_files/phone.svg" alt="phone" />
-                    </div>
-                    <div className="text">
-                      <span>Phone</span>
-                      <h6>+1 100 234 5909</h6>
-                    </div>
-                  </div>
-                </div>
-
+      {/* Main Sections */}
+      <div className="grid md:grid-cols-3 gap-8 mb-16">
+        {sections.map((section, index) => (
+          <div 
+            key={index} 
+            className="bg-white p-8 rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+          >
+            <div className={`w-16 h-16 bg-gradient-to-br ${section.gradient} rounded-2xl flex items-center justify-center mb-6`}>
+              <div className="text-white text-2xl">
+                {section.icon}
               </div>
             </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-4">{section.title}</h3>
+            <p className="text-gray-600 leading-relaxed">{section.content}</p>
+          </div>
+        ))}
+      </div>
 
-            <div className="col-lg-6 d-flex justify-content-center">
-              <div className="about-images">
-                <img
-                  className="wow img-custom-anim-right"
-                  data-wow-delay=".3s"
-                  src="/index_files/man.png"
-                  alt="Tomiwa Oluwadare"
-                />
-                <div className="bg-shape wow img-custom-anim-top">
-                  <img src="/index_files/bg-shape-2.png" alt="background shape" />
-                </div>
-                <div className="shape-left float-bob-x">
-                  <img src="/index_files/shape-left.png" alt="shape left" />
-                </div>
-                <div className="shape-right float-bob-y">
-                  <img src="/index_files/shape-right.png" alt="shape right" />
-                </div>
+      {/* Why RENEW Section */}
+      <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-2xl mb-16">       
+        
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+              <div className="rounded-xl flex items-center justify-center">
+                <FaRocket className="text-green-600 text-xl" />
+                <h3 className="text-2xl ml-6 font-bold text-gray-900">Why RENEW is the New Deal</h3>
               </div>
-            </div>
-
+              <p className="text-gray-700 leading-relaxed">
+                The drive for sustainability, decarbonization, and net zero comes with some pain points, 
+                including information overload, time constraints, and resource limitations, especially for 
+                Micro, Small, and Medium Enterprises (MSMEs). For some, the problem is not knowing where 
+                to start; for others, it is not knowing which solutions to trust and how to stay ahead 
+                of competition and the regulatory curve.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                RENEW helps you cut through the noise, simplify the jargon, and connect you with verified 
+                opportunities and solutions. It also helps determine your baseline and eligibility for 
+                recommended products and services, and provides guided steps for improvements and progression.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                All of these in one place within a secure and dedicated space where you own and control the narrative at your pace.
+              </p>
+          </div>
+          
+          <div className="bg-white p-4 rounded-xl shadow-sm">
+            <h4 className="font-semibold text-gray-900 mb-4">In summary, many businesses are faced with the following pain points:</h4>
+            <ul className="space-y-3">
+              {painPoints.map((point, index) => (
+                <li key={index} className="flex items-start gap-3">
+                  <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                  </div>
+                  <span className="text-gray-700">{point}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="italic mt-2" style={{color: 'green'}}>
+              These often result in inaction after awareness — businesses and other organisations are aware of the gaps and weaknesses, but cannot access practical, reliable, and affordable solutions. This is where RENEW comes in!
+            </p>
           </div>
         </div>
       </div>
-    </section>
+
+      {/* SDGs Section */}
+      <div className="container mx-auto px-4 py-12">
+
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+
+    {/* LEFT COLUMN – TEXT WITH ILLUSTRATIVE IMAGE */}
+    <div className="flex flex-col items-start">
+      {/* Suggested illustrative image for the left column */}
+      <img
+        src="imgs/world.png" 
+        alt="United Nations Sustainable Development Goals icons grid" 
+        className="w-full max-w-xs sm:max-w-sm md:max-w-md h-auto object-contain"
+      />
+    </div>
+
+    {/* RIGHT COLUMN – SDG LIST */}
+    <div className="bg-gray-50 rounded-2xl p-4 shadow-sm">
+      <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
+        RENEW and the SDGs
+      </h2>
+
+      <p className="text-lg leading-relaxed mb-8" style={{color: 'green'}}>
+        RENEW Marketplace contributes to the fulfilment of the following Sustainable Development Goals (SDGs):
+      </p>
+      <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 text-lg">
+        <li><strong>SDG 7:</strong> Affordable and Clean Energy</li>
+        <li><strong>SDG 8:</strong> Decent Work and Economic Growth</li>
+        <li><strong>SDG 9:</strong> Industry, Innovation, and Infrastructure</li>
+        <li><strong>SDG 10:</strong> Reduced Inequalities</li>
+        <li><strong>SDG 11:</strong> Sustainable Cities and Communities</li>
+        <li><strong>SDG 12:</strong> Responsible Consumption and Production</li>
+        <li><strong>SDG 13:</strong> Climate Action</li>
+        <li><strong>SDG 17:</strong> Partnerships for the Goals</li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>
+
+    </div>
   );
 }

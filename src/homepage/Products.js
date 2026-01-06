@@ -1,211 +1,487 @@
+'use client';
+
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
+  FaSolarPanel,
+  FaHandHoldingUsd,
+  FaLeaf,
+  FaTree,
+  FaRecycle,
   FaStar,
   FaCrown,
-  FaCheck,
   FaArrowRight,
-  FaMoneyBillWave,
-  FaChartLine,
-  FaCogs,
-  FaLeaf,
-  FaHandHoldingUsd,
-  FaClipboardCheck,
-  FaTools,
-  FaPiggyBank,
-  FaHome,
-  FaHeart,
-  FaUsers,
-  FaCheckCircle,
-  FaSolarPanel
-} from "react-icons/fa";
+  FaChevronLeft,
+  FaChevronRight,
+  FaCheck,
+} from 'react-icons/fa';
 
-export default function Products() {
-  const products = [
-    {
-      name: 'Warm Home Discount Scheme (WHD)',
-      popular: true,
-      features: [
-        'Solar Energy Systems Installation',
-        'EV Charging Infrastructure',
-        'Battery Storage Solutions',
-        'LED Lighting Upgrades',
-        'Heating System Modernization',
-        'Energy Efficiency Optimization'
-      ],
-      benefits: [
-        { icon: <FaMoneyBillWave className="text-green-500" />, text: 'Cut energy costs significantly' },
-        { icon: <FaChartLine className="text-green-500" />, text: 'Market predictability' },
-        { icon: <FaCogs className="text-green-500" />, text: 'Infrastructure upgrades' },
-        { icon: <FaLeaf className="text-green-500" />, text: 'Reduce carbon emissions' }
-      ],
-      cta: 'Apply for WHD',
-      link: '#/mandatory_form/ppa-form',
-      icon: <FaSolarPanel className="text-white text-2xl" />
-    },
+const products = [
+  {
+    name: 'Renewable Energy & Energy Efficiency Schemes',
+    popular: true,
+    icon: <FaSolarPanel className="text-white text-xl sm:text-2xl" />,
+    features: [
+      'Solar Panel Installation',
+      'EV Charging Points',
+      'Battery Storage Systems',
+      'LED Lighting Upgrades',
+      'Heating & Refrigeration',
+      'Insulation & Retrofitting',
+      'Finance Options & Discounts',
+    ],
+    benefits: [
+      'Significant cost savings',
+      'Energy price predictability',
+      'Optimised product selection',
+      'Reduced carbon footprint',
+    ],
+    cta: 'Tell us what you need to get started',
+    color: 'from-green-600 to-emerald-700',
+  },
+  {
+    name: 'Energy Savings Grants & Government Support',
+    popular: false,
+    icon: <FaHandHoldingUsd className="text-white text-xl sm:text-2xl" />,
+    features: [
+      'Winter Fuel Payments',
+      'Warm Home Discount Scheme',
+      'Free Energy Assessments',
+      'Building Insulation Grants',
+      'Solar & LED Funding',
+      'HVAC & Roof Upgrades',
+      'Water & Waste Management',
+    ],
+    benefits: [
+      'Cash grants available',
+      'Free professional audits',
+      'Fully funded upgrades',
+      'Reduce energy poverty',
+    ],
+    cta: 'Tell us what you need to get started',
+    color: 'from-blue-600 to-cyan-700',
+  },
+  {
+    name: 'Sustainability Support & Consulting',
+    popular: false,
+    icon: <FaLeaf className="text-white text-xl sm:text-2xl" />,
+    features: [
+      'Sustainability Strategy & Policy',
+      'Action Plans & Practice Guides',
+      'Carbon Measurement & Reporting',
+      'Green Marketing & Communication',
+    ],
+    benefits: [
+      'Regulatory compliance',
+      'Competitive advantage',
+      'Build success stories',
+      'Ethical brand leadership',
+    ],
+    cta: 'Tell us what you need to get started',
+    color: 'from-emerald-600 to-teal-700',
+  },
+  {
+    name: 'Biodiversity & Ecosystem Support',
+    popular: false,
+    icon: <FaTree className="text-white text-xl sm:text-2xl" />,
+    features: [
+      'Biodiversity Net Gain (BNG)',
+      'Environmental Conservation Projects',
+      'Verified Carbon Offsets',
+      'Green Space Development',
+      'Afforestation Initiatives',
+    ],
+    benefits: [
+      'Restore ecosystems',
+      'Nature-based solutions',
+      'Protect biodiversity',
+      'Long-term resilience',
+    ],
+    cta: 'Tell us what you need to get started',
+    color: 'from-lime-600 to-green-700',
+  },
+  {
+    name: 'Circular Economy Practices',
+    popular: false,
+    icon: <FaRecycle className="text-white text-xl sm:text-2xl" />,
+    features: [
+      'Deposit Return Schemes',
+      'Advanced Waste Recycling',
+      'Reuse & Repurposing Programs',
+      'Zero-Waste Consulting',
+      'Resource Efficiency Audits',
+    ],
+    benefits: [
+      'Waste to wealth',
+      'Resource efficiency',
+      'Fewer landfills',
+      'Drive business innovation',
+    ],
+    cta: 'Tell us what you need to get started',
+    color: 'from-amber-600 to-orange-600',
+  },
+];
 
-    {
-      name: 'Business Energy Advice Service (BEAS)',
-      popular: false,
-      features: [
-        'Improved Refrigeration Systems',
-        'Building Insulation Upgrades',
-        'Water Management Solutions',
-        'Recycling & Waste Management',
-        'HVAC System Optimization',
-        'LED Lighting Retrofit'
-      ],
-      benefits: [
-        { icon: <FaHandHoldingUsd className="text-green-500" />, text: 'Substantial cash grants' },
-        { icon: <FaClipboardCheck className="text-green-500" />, text: 'Free energy assessments' },
-        { icon: <FaTools className="text-green-500" />, text: 'Energy efficiency upgrades' },
-        { icon: <FaPiggyBank className="text-green-500" />, text: 'Maximum savings potential' }
-      ],
-      cta: 'Apply for BEAS Grants',
-      link: '#/mandatory_form/beas-form',
-      icon: <FaHandHoldingUsd className="text-white text-2xl" />
-    },
+export default function ProductsPage() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
 
-    {
-      name: 'Average Megawatt (AMW) Renewable',
-      popular: false,
-      features: [
-        'Winter Fuel Payments',
-        'Warm Home Discount Scheme',
-        'Energy Bill Support',
-        'Low-Income Assistance',
-        'Community Energy Programs',
-        'Home Upgrade Grants'
-      ],
-      benefits: [
-        { icon: <FaHome className="text-green-500" />, text: 'Reduce energy bills' },
-        { icon: <FaHeart className="text-green-500" />, text: 'Combat energy poverty' },
-        { icon: <FaUsers className="text-green-500" />, text: 'Enhance community energy' },
-        { icon: <FaCheckCircle className="text-green-500" />, text: 'Quick approvals' }
-      ],
-      cta: 'Apply for AMW Renewable',
-      link: '#/mandatory_form/amw-form',
-      icon: <FaHome className="text-white text-2xl" />
+  const sliderRef = useRef(null);
+  const intervalRef = useRef(null);
+
+  const minSwipeDistance = 50;
+  const AUTO_PLAY_INTERVAL = 10000; // 10 seconds — slower and more user-friendly
+
+  // Detect mobile
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
+
+  // Slider navigation
+  const nextSlide = useCallback(() => {
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => (prev + 1) % products.length);
+    setTimeout(() => setIsTransitioning(false), 300);
+  }, []);
+
+  const prevSlide = useCallback(() => {
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => (prev - 1 + products.length) % products.length);
+    setTimeout(() => setIsTransitioning(false), 300);
+  }, []);
+
+  const goToSlide = useCallback((index) => {
+    if (index === currentIndex) return;
+    setIsTransitioning(true);
+    setCurrentIndex(index);
+    setTimeout(() => setIsTransitioning(false), 300);
+  }, [currentIndex]);
+
+  // Touch handlers
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    if (isLeftSwipe) nextSlide();
+    if (isRightSwipe) prevSlide();
+  };
+
+  // Auto-play with pause on hover/touch
+  useEffect(() => {
+    const startInterval = () => {
+      intervalRef.current = setInterval(nextSlide, AUTO_PLAY_INTERVAL);
+    };
+
+    const pauseInterval = () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+
+    startInterval();
+
+    const slider = sliderRef.current;
+    if (slider) {
+      slider.addEventListener('mouseenter', pauseInterval);
+      slider.addEventListener('mouseleave', startInterval);
+      slider.addEventListener('touchstart', pauseInterval);
+      slider.addEventListener('touchend', startInterval);
     }
-  ];
 
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+    return () => {
+      pauseInterval();
+      if (slider) {
+        slider.removeEventListener('mouseenter', pauseInterval);
+        slider.removeEventListener('mouseleave', startInterval);
+        slider.removeEventListener('touchstart', pauseInterval);
+        slider.removeEventListener('touchend', startInterval);
+      }
+    };
+  }, [nextSlide]);
+
+  // Scroll to contact section
+  const scrollToContact = () => {
+    const contactElement = document.getElementById('contact');
+    if (contactElement) {
+      contactElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
+  // Get visible products based on screen size
+  const getVisibleProducts = () => {
+    if (isMobile) {
+      return [
+        {
+          ...products[currentIndex],
+          isActive: true,
+          isMobile: true,
+        },
+      ];
+    }
+
+    const result = [];
+    for (let i = -1; i <= 1; i++) {
+      const index = (currentIndex + i + products.length) % products.length;
+      result.push({
+        ...products[index],
+        isActive: i === 0,
+        isPrevious: i === -1,
+        isNext: i === 1,
+        isMobile: false,
+      });
+    }
+    return result;
+  };
+
+  const visibleProducts = getVisibleProducts();
+
   return (
-    <div className="container mx-auto px-4">
-      
-      {/* Header Section */}
-      <div className="text-center mb-16">
-        <div className="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-full font-medium text-green-600 shadow-md mb-6">
-          <FaStar className="text-orange-500" />
-          Our Solutions
-        </div>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white sm:py-12 px-4 sm:px-6 lg:px-2">
+      <div className="container mx-auto max-w-7xl">
+        {/* Header */}
+        <header className="text-center mb-2 sm:mb-16">
+          <div className="inline-flex items-center gap-2 bg-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-medium text-green-700 shadow-lg mb-4 sm:mb-6 text-sm sm:text-base">
+            <FaStar className="text-yellow-500 text-sm sm:text-base" />
+            <span className="font-semibold">Our Sustainability Solutions</span>
+          </div>
+        </header>
 
-        <h2 className="text-4xl font-bold mb-4">
-          Energy{' '}
-          <span className="bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
-            Solutions
-          </span>{' '}
-          That Save You Money
-        </h2>
-
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Choose the perfect energy solution for your needs. All options designed to reduce costs and environmental impact.
-        </p>
-      </div>
-
-      {/* Products Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-        {products.map((product, index) => (
-          <div
-            key={index}
-            className={`bg-white rounded-2xl p-8 shadow-md border relative flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-2 ${
-              product.popular
-                ? 'border-2 border-green-500 bg-gradient-to-br from-white to-green-50'
-                : 'border border-gray-200'
-            }`}
-          >
-
-            {/* Popular Badge */}
-            {product.popular && (
-              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-green-500 to-green-700 text-white px-6 py-2 rounded-full text-sm font-semibold flex items-center gap-2 shadow-lg">
-                <FaCrown />
-                Most Popular
-              </div>
-            )}
-
-            {/* Product Header */}
-            <div className="text-center mb-8 pb-8 border-b border-gray-200">
-              <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center mx-auto mb-6">
-                {product.icon}
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-4">{product.name}</h3>
-            </div>
-
-            {/* Features Section */}
-            <div className="mb-8 flex-grow">
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">What's Included:</h4>
-              <ul className="space-y-3">
-                {product.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-3 text-gray-600">
-                    <FaCheck className="text-green-500 mt-1 flex-shrink-0" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Benefits Section */}
-            <div className="mb-8">
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">Key Benefits:</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {product.benefits.map((benefit, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg transition-all duration-300 hover:bg-green-50 hover:translate-x-1"
-                  >
-                    <div className="text-green-500 w-4">{benefit.icon}</div>
-                    <span className="text-sm font-medium text-gray-900">{benefit.text}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* CTA Button */}
-            <div className="mt-auto">
-              <a
-                href={product.link}
-                className={`btn w-full justify-center ${
-                  product.popular ? 'btn-primary' : 'btn-secondary'
-                }`}
+        {/* Slider Section */}
+        <section
+          ref={sliderRef}
+          className="relative mb-12 sm:mb-20"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
+          {/* Desktop Navigation Buttons */}
+          {!isMobile && (
+            <>
+              <button
+                onClick={prevSlide}
+                disabled={isTransitioning}
+                className="absolute -left-2 sm:left-0 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white shadow-lg sm:shadow-2xl rounded-full p-2 sm:p-4 transition-all hover:scale-105 sm:hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Previous slide"
               >
-                {product.cta}
-                <FaArrowRight className="ml-2" />
-              </a>
+                <FaChevronLeft className="text-lg sm:text-2xl text-green-700" />
+              </button>
+              <button
+                onClick={nextSlide}
+                disabled={isTransitioning}
+                className="absolute -right-2 sm:right-0 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white shadow-lg sm:shadow-2xl rounded-full p-2 sm:p-4 transition-all hover:scale-105 sm:hover:scale-110 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Next slide"
+              >
+                <FaChevronRight className="text-lg sm:text-2xl text-green-700" />
+              </button>
+            </>
+          )}
+
+          {/* Slider Cards */}
+          <div className="px-2 sm:px-8 lg:px-16 xl:px-24">
+            <div
+              className={`flex items-center ${isMobile ? 'justify-center' : 'gap-2 sm:gap-4'} transition-opacity duration-300 ${
+                isTransitioning ? 'opacity-90' : 'opacity-100'
+              }`}
+            >
+              {visibleProducts.map((product, index) => (
+                <div
+                  key={`${product.name}-${index}`}
+                  className={`
+                    transition-all duration-500 ease-in-out
+                    ${isMobile
+                      ? 'w-full max-w-sm'
+                      : product.isActive
+                      ? 'w-full md:w-[45%] lg:w-[40%] flex-shrink-0 scale-100'
+                      : 'w-full md:w-[27.5%] lg:w-[30%] flex-shrink-0 scale-95 hidden sm:block'
+                    }
+                  `}
+                >
+                  <div
+                    className={`
+                      relative bg-white rounded-xl sm:rounded-2xl lg:rounded-3xl p-4 sm:p-6 lg:p-8 shadow-lg sm:shadow-xl border-2 h-full transition-all duration-500
+                      ${product.isActive
+                        ? 'border-green-500 bg-gradient-to-br from-white via-green-50/50 to-white shadow-xl sm:shadow-2xl shadow-green-200/50 z-20'
+                        : 'border-gray-100 shadow-lg opacity-90'
+                      }
+                      ${product.isActive ? 'hover:-translate-y-1 sm:hover:-translate-y-2 lg:hover:-translate-y-3' : 'sm:hover:-translate-y-1'}
+                    `}
+                  >
+                    {/* Popular Badge */}
+                    {product.popular && (
+                      <div
+                        className={`absolute -top-2 sm:-top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-green-600 to-emerald-700 text-white px-3 sm:px-4 py-1 sm:py-2 rounded-full text-xs sm:text-sm font-bold flex items-center gap-1 sm:gap-2 shadow-lg sm:shadow-xl ${
+                          product.isActive && !isMobile ? 'animate-bounce' : ''
+                        }`}
+                      >
+                        <FaCrown className="text-yellow-300 text-xs sm:text-sm" />
+                        Most Popular
+                      </div>
+                    )}
+
+                    {/* Icon */}
+                    <div
+                      className={`w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-gradient-to-br ${product.color} rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-md sm:shadow-lg`}
+                    >
+                      {product.icon}
+                    </div>
+
+                    {/* Title */}
+                    <div
+                      className={`
+                        font-bold text-gray-900 text-center mb-2 sm:mb-2 leading-snug
+                        ${isMobile
+                          ? 'text-lg sm:text-xl'
+                          : product.isActive
+                          ? 'text-xl sm:text-2xl lg:text-3xl mb-4'
+                          : 'text-sm sm:text-base lg:text-lg'
+                        }
+                      `}
+                    >
+                      {product.name}
+                    </div>
+
+                    {/* Content: Full details if active, summary if not */}
+                    {product.isActive ? (
+                      <div className="space-y-4 sm:space-y-6 mb-6 sm:mb-8">
+                        <div>
+                          <h4 className="text-sm sm:text-base font-semibold text-gray-800 mb-2 sm:mb-3 flex items-center gap-1 sm:gap-2">
+                            <FaCheck className="text-green-600 text-sm sm:text-base" />
+                            What's Included
+                          </h4>
+                          <ul className="space-y-1 sm:space-y-2">
+                            {product.features.map((feature, idx) => (
+                              <li key={idx} className="flex items-start text-gray-700">
+                                <span className="mr-2 text-green-600 mt-0.5 sm:mt-1 text-xs sm:text-sm">•</span>
+                                <span className="text-xs sm:text-sm leading-relaxed sm:leading-normal">{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        <div>
+                          <h4 className="text-sm sm:text-base font-semibold text-gray-800 mb-2 sm:mb-3 flex items-center gap-1 sm:gap-2">
+                            <FaStar className="text-green-600 text-sm sm:text-base" />
+                            Key Benefits
+                          </h4>
+                          <ul className="space-y-1 sm:space-y-2">
+                            {product.benefits.map((benefit, idx) => (
+                              <li key={idx} className="flex items-start text-gray-700">
+                                <span className="mr-2 text-green-600 mt-0.5 sm:mt-1 text-xs sm:text-sm">•</span>
+                                <span className="text-xs sm:text-sm leading-relaxed sm:leading-normal">{benefit}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="mb-6 sm:mb-4">
+                        <div className="bg-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4">
+                          <h6 className="text-xs sm:text-sm font-semibold text-gray-700 mb-1 sm:mb-2">
+                            Includes {product.features.length} features
+                          </h6>
+                          <ul className="space-y-1">
+                            {product.features.slice(0, 3).map((feature, idx) => (
+                              <li key={idx} className="flex items-center text-gray-600">
+                                <span className="mr-1 sm:mr-2 text-green-500 text-xs">✓</span>
+                                <span className="text-xs truncate">{feature}</span>
+                              </li>
+                            ))}
+                            {product.features.length > 3 && (
+                              <li className="text-gray-500 text-xs">+{product.features.length - 3} more...</li>
+                            )}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* CTA Button */}
+                    <button
+                      onClick={scrollToContact}
+                      className={`
+                        w-full py-2 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl font-semibold flex items-center justify-center gap-2 sm:gap-3 transition-all group text-sm sm:text-base
+                        ${product.isActive
+                          ? `bg-gradient-to-r ${product.color} text-white hover:shadow-md sm:hover:shadow-lg hover:scale-[1.02] shadow-sm sm:shadow-md`
+                          : 'bg-gray-50 text-gray-800 hover:bg-gray-100 border border-gray-200'
+                        }
+                      `}
+                    >
+                      {product.cta}
+                      <FaArrowRight
+                        className={`transition-transform ${
+                          product.isActive ? 'group-hover:translate-x-1 sm:group-hover:translate-x-2' : 'group-hover:translate-x-1'
+                        } text-xs sm:text-sm`}
+                      />
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
 
-      {/* Solution Note Section */}
-      <div className="text-center">
-        <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-12 shadow-md border-l-4 border-green-500 max-w-4xl mx-auto">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">Not Sure Which Solution is Right for You?</h3>
-          <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-            Our energy experts will assess your specific needs and recommend the perfect combination 
-            of solutions to maximize your savings and environmental impact.
-          </p>
-          <button 
-            className="btn btn-primary btn-large"
-            onClick={() => scrollToSection('contact')}
-          >
-            Get Personalized Recommendation
-            <FaArrowRight className="ml-2" />
-          </button>
-        </div>
+          {/* Dots Indicator */}
+          <div className="flex justify-center mt-8 sm:mt-10 gap-1 sm:gap-2">
+            {products.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-1 sm:focus:ring-2 focus:ring-green-500 focus:ring-offset-1 sm:focus:ring-offset-2 ${
+                  index === currentIndex
+                    ? 'bg-gradient-to-r from-green-600 to-emerald-700 w-6 sm:w-10'
+                    : 'bg-gray-300 hover:bg-gray-400 w-4 sm:w-8'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+                aria-current={index === currentIndex}
+              />
+            ))}
+          </div>
+
+          {/* Slide Counter */}
+          <div className="text-center mt-3 sm:mt-4 text-gray-600 text-xs sm:text-sm">
+            <span className="font-medium">{currentIndex + 1}</span>
+            <span className="mx-1 sm:mx-2">/</span>
+            <span>{products.length}</span>
+          </div>
+
+          {/* Mobile Arrows */}
+          {isMobile && products.length > 1 && (
+            <div className="flex justify-center mt-6 gap-4">
+              <button
+                onClick={prevSlide}
+                disabled={isTransitioning}
+                className="bg-white/90 hover:bg-white shadow-lg rounded-full p-3 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Previous slide"
+              >
+                <FaChevronLeft className="text-xl text-green-700" />
+              </button>
+              <button
+                onClick={nextSlide}
+                disabled={isTransitioning}
+                className="bg-white/90 hover:bg-white shadow-lg rounded-full p-3 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Next slide"
+              >
+                <FaChevronRight className="text-xl text-green-700" />
+              </button>
+            </div>
+          )}
+        </section>
       </div>
     </div>
   );
