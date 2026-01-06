@@ -41,7 +41,7 @@ const products = [
       "Infrastructure upgrades"
     ],
     cta: "Tell us what you need to get started",
-    link: "#contact",
+    link: '#/mandatory_form/beas-form',
     color: "from-green-600 to-emerald-700"
   },
   {
@@ -70,7 +70,7 @@ const products = [
       "Customised offers"
     ],
     cta: "Tell us what you need to get started",
-    link: "#contact",
+    link: '#/mandatory_form/ppa-form',
     color: "from-blue-600 to-cyan-700"
   },
   {
@@ -91,7 +91,7 @@ const products = [
       "Ethical business practices"
     ],
     cta: "Tell us what you need to get started",
-    link: "#contact",
+    link: '#/mandatory_form/amw-form',
     color: "from-emerald-600 to-teal-700"
   },
   {
