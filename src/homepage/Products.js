@@ -17,108 +17,122 @@ import {
 
 const products = [
   {
-    name: 'Renewable Energy & Energy Efficiency Schemes',
+    name: "Renewable Energy and Energy Efficiency Schemes",
     popular: true,
     icon: <FaSolarPanel className="text-white text-xl sm:text-2xl" />,
     features: [
-      'Solar Panel Installation',
-      'EV Charging Points',
-      'Battery Storage Systems',
-      'LED Lighting Upgrades',
-      'Heating & Refrigeration',
-      'Insulation & Retrofitting',
-      'Finance Options & Discounts',
+      "Solar",
+      "EV chargers",
+      "Battery storage",
+      "LED lighting",
+      "Heating",
+      "Refrigeration",
+      "Insulation",
+      "etc"
     ],
     benefits: [
-      'Significant cost savings',
-      'Energy price predictability',
-      'Optimised product selection',
-      'Reduced carbon footprint',
+      "Cost savings",
+      "Market predictability",
+      "Multiple providers",
+      "Optimised products",
+      "Finance options",
+      "Discounts",
+      "Retrofitting",
+      "Infrastructure upgrades"
     ],
-    cta: 'Tell us what you need to get started',
-    color: 'from-green-600 to-emerald-700',
+    cta: "Tell us what you need to get started",
+    link: "#contact",
+    color: "from-green-600 to-emerald-700"
   },
   {
-    name: 'Energy Savings Grants & Government Support',
+    name: "Energy Savings Grants and Government Support",
     popular: false,
     icon: <FaHandHoldingUsd className="text-white text-xl sm:text-2xl" />,
     features: [
-      'Winter Fuel Payments',
-      'Warm Home Discount Scheme',
-      'Free Energy Assessments',
-      'Building Insulation Grants',
-      'Solar & LED Funding',
-      'HVAC & Roof Upgrades',
-      'Water & Waste Management',
+      "Winter fuel payment",
+      "Warm home scheme",
+      "Improved refrigeration",
+      "Building insulation",
+      "Water management",
+      "Recycling and waste management",
+      "Heating",
+      "Ventilation",
+      "Roof replacements",
+      "Solar",
+      "LED lighting",
+      "etc"
     ],
     benefits: [
-      'Cash grants available',
-      'Free professional audits',
-      'Fully funded upgrades',
-      'Reduce energy poverty',
+      "Free energy assessments",
+      "Energy efficiency upgrades",
+      "Cash grants",
+      "Reduce energy poverty",
+      "Customised offers"
     ],
-    cta: 'Tell us what you need to get started',
-    color: 'from-blue-600 to-cyan-700',
+    cta: "Tell us what you need to get started",
+    link: "#contact",
+    color: "from-blue-600 to-cyan-700"
   },
   {
-    name: 'Sustainability Support & Consulting',
+    name: "Sustainability Support and Consulting",
     popular: false,
     icon: <FaLeaf className="text-white text-xl sm:text-2xl" />,
     features: [
-      'Sustainability Strategy & Policy',
-      'Action Plans & Practice Guides',
-      'Carbon Measurement & Reporting',
-      'Green Marketing & Communication',
+      "Strategy and policy",
+      "Practice guides and action plans",
+      "Measurement and reporting",
+      "Green communication and marketing"
     ],
     benefits: [
-      'Regulatory compliance',
-      'Competitive advantage',
-      'Build success stories',
-      'Ethical brand leadership',
+      "Legal and regulatory compliance",
+      "Competitive advantage",
+      "Sustainability success stories",
+      "Socially responsible practices",
+      "Ethical business practices"
     ],
-    cta: 'Tell us what you need to get started',
-    color: 'from-emerald-600 to-teal-700',
+    cta: "Tell us what you need to get started",
+    link: "#contact",
+    color: "from-emerald-600 to-teal-700"
   },
   {
-    name: 'Biodiversity & Ecosystem Support',
+    name: "Biodiversity and Ecosystem Support",
     popular: false,
     icon: <FaTree className="text-white text-xl sm:text-2xl" />,
     features: [
-      'Biodiversity Net Gain (BNG)',
-      'Environmental Conservation Projects',
-      'Verified Carbon Offsets',
-      'Green Space Development',
-      'Afforestation Initiatives',
+      "Biodiversity Net Gain",
+      "Environmental conservation",
+      "Carbon offsets"
     ],
     benefits: [
-      'Restore ecosystems',
-      'Nature-based solutions',
-      'Protect biodiversity',
-      'Long-term resilience',
+      "Ecosystem services",
+      "Biodiversity restoration",
+      "Nature-based solutions",
+      "Green spaces",
+      "Afforestation"
     ],
-    cta: 'Tell us what you need to get started',
-    color: 'from-lime-600 to-green-700',
+    cta: "Tell us what you need to get started",
+    color: "from-lime-600 to-green-700"
   },
   {
-    name: 'Circular Economy Practices',
+    name: "Circular Economy Practices",
     popular: false,
     icon: <FaRecycle className="text-white text-xl sm:text-2xl" />,
     features: [
-      'Deposit Return Schemes',
-      'Advanced Waste Recycling',
-      'Reuse & Repurposing Programs',
-      'Zero-Waste Consulting',
-      'Resource Efficiency Audits',
+      "Deposit Return Scheme",
+      "Waste recycling",
+      "Reuse"
     ],
     benefits: [
-      'Waste to wealth',
-      'Resource efficiency',
-      'Fewer landfills',
-      'Drive business innovation',
+      "Waste to wealth",
+      "Resource efficiency",
+      "Fewer landfills",
+      "Minimise environmental pollution",
+      "Business innovation"
     ],
-    cta: 'Tell us what you need to get started',
-    color: 'from-amber-600 to-orange-600',
-  },
+    cta: "Tell us what you need to get started",
+    link: "#contact",
+    color: "from-amber-600 to-orange-600"
+  }
 ];
 
 export default function ProductsPage() {
@@ -364,7 +378,7 @@ export default function ProductsPage() {
                         <div>
                           <h4 className="text-sm sm:text-base font-semibold text-gray-800 mb-2 sm:mb-3 flex items-center gap-1 sm:gap-2">
                             <FaCheck className="text-green-600 text-sm sm:text-base" />
-                            What's Included
+                            Range of offers
                           </h4>
                           <ul className="space-y-1 sm:space-y-2">
                             {product.features.map((feature, idx) => (
@@ -379,7 +393,7 @@ export default function ProductsPage() {
                         <div>
                           <h4 className="text-sm sm:text-base font-semibold text-gray-800 mb-2 sm:mb-3 flex items-center gap-1 sm:gap-2">
                             <FaStar className="text-green-600 text-sm sm:text-base" />
-                            Key Benefits
+                            Benefits
                           </h4>
                           <ul className="space-y-1 sm:space-y-2">
                             {product.benefits.map((benefit, idx) => (
@@ -395,7 +409,7 @@ export default function ProductsPage() {
                       <div className="mb-6 sm:mb-4">
                         <div className="bg-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4">
                           <h6 className="text-xs sm:text-sm font-semibold text-gray-700 mb-1 sm:mb-2">
-                            Includes {product.features.length} features
+                            Includes {product.features.length} offers and {product.benefits.length} benefits
                           </h6>
                           <ul className="space-y-1">
                             {product.features.slice(0, 3).map((feature, idx) => (
