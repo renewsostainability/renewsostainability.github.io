@@ -43,8 +43,8 @@ export default function Contact() {
         {/* Contact Info Section */}
         <div className="lg:pr-8">
           <div className="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-full font-medium text-green-600 shadow-md mb-6">
-            <FaStar className="text-orange-500" />
-            Get Started
+            <FaEnvelope className="text-orange-500" />
+            Contact RENEW
           </div>
           
           <h2 className="text-4xl font-bold mb-6 leading-tight">

@@ -427,10 +427,10 @@ export default function ProductsPage() {
                     )}
 
                     {/* CTA Button */}
-                    <button
-                      onClick={scrollToContact}
+                    <a
+                      href={product.link}
                       className={`
-                        w-full py-2 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl font-semibold flex items-center justify-center gap-2 sm:gap-3 transition-all group text-sm sm:text-base
+                        w-full py-2 text-center sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl font-semibold flex items-center justify-center gap-2 sm:gap-3 transition-all group text-sm sm:text-base
                         ${product.isActive
                           ? `bg-gradient-to-r ${product.color} text-white hover:shadow-md sm:hover:shadow-lg hover:scale-[1.02] shadow-sm sm:shadow-md`
                           : 'bg-gray-50 text-gray-800 hover:bg-gray-100 border border-gray-200'
@@ -443,7 +443,7 @@ export default function ProductsPage() {
                           product.isActive ? 'group-hover:translate-x-1 sm:group-hover:translate-x-2' : 'group-hover:translate-x-1'
                         } text-xs sm:text-sm`}
                       />
-                    </button>
+                    </a>
                   </div>
                 </div>
               ))}

@@ -86,7 +86,7 @@ export default function Hero() {
 
             <div className="flex flex-col sm:flex-row gap-4">
               <button
-                className="btn btn-primary btn-large"
+                className="btn btn-primary btn-large flex items-center justify-center text-center"
                 onClick={(e) => {
                   e.preventDefault();
                   scrollToSection('products');
@@ -96,7 +96,7 @@ export default function Hero() {
               </button>
 
               <button
-                className="btn btn-secondary btn-large"
+                className="btn btn-secondary btn-large flex items-center justify-center text-center"
                 onClick={(e) => {
                   e.preventDefault();
                   scrollToSection('contact');
@@ -106,6 +106,7 @@ export default function Hero() {
                 Contact Us
               </button>
             </div>
+
           </div>
 
           {/* RIGHT SIDE VISUAL */}
