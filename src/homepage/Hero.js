@@ -1,20 +1,13 @@
 import './Hero.css';
 import { useEffect, useState } from 'react';
-
-import {
-  FaStar,
-  FaArrowRight,
-  FaSolarPanel,
-  FaBolt,
-  FaLeaf,
-  FaChargingStation,
-  FaPhone
-} from "react-icons/fa";
+import { FaStar, FaArrowRight, FaExternalLinkAlt, FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 export default function Hero() {
   const text = 'What do you need today?';
   const [displayedText, setDisplayedText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const [leftShowMore, setLeftShowMore] = useState(false);
+  const [rightShowMore, setRightShowMore] = useState(false);
 
   useEffect(() => {
     let timeout;
@@ -48,92 +41,169 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-green-50 via-emerald-50 to-white overflow-hidden py-24 lg:py-32 z-10">
-      <div className="container mx-auto px-4 relative z-20">
+    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden py-20 lg:py-28">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 z-0 opacity-5">
+        <div className="absolute inset-0 bg-[radial-gradient(#0ea5e9_1px,transparent_1px)] bg-[length:40px_40px]"></div>
+      </div>
+
+      {/* Decorative Elements */}
+      <div className="absolute top-20 left-10 w-72 h-72 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+      <div className="absolute bottom-20 right-10 w-72 h-72 bg-emerald-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+
+      <div className="container mx-auto px-4 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-
-          {/* LEFT SIDE TEXT */}
-          <div className="text-left">
-            <div className="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-full font-medium text-green-600 shadow-md mb-8">
-              <FaStar className="text-orange-500" />
-              Welcome to RENEW!
-            </div>
-
-            <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-6 text-gray-900">
-              <span className="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent relative">
-                
-                {/* Typed text (wraps naturally) */}
-                <span className="font-semibold text-green-600">
-                  {displayedText || '\u00A0'}
-                </span>
-
-                {/* Cursor (inline, wrapping-safe) */}
-                <span
-                  className="inline-block align-baseline ml-1 w-[2px] h-[1em] bg-green-600 animate-blink"
-                  aria-hidden="true"
-                />
+          
+          {/* LEFT SIDE - Clean Modern Design */}
+          <div className="relative">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-3 bg-white px-5 py-3 rounded-2xl font-semibold text-slate-700 shadow-lg mb-10 border border-slate-200">
+              <FaStar className="text-amber-500 animate-pulse" />
+              <span className="bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
+                Welcome to RENEW
               </span>
-            </h2>
-
-            <div className="text-lg text-gray-600 leading-relaxed mb-8 space-y-4">
-              <p>
-                We recognise that for households, businesses, and sundry organisations, rising energy bills can be a concern, just like high-emission power sources can harm the environment. That’s why we are here to help: whether your goal is to reduce costs, improve efficiency, reduce carbon emissions, make measured progress on your sustainability journey, and achieve good returns on investment and a greener planet, RENEW is your all-in-one solution.
-              </p>
-              <p className='italic'>
-                To get started, tell us a bit about yourself and what you need today (Begin Mandatory Data Collection…then funnel into listed products and services… prompt choice selection and begin Eligibility Check… Eligibility Result either leads to creating the connection between the user and the appropriate provider or the SBA survey.)
-              </p>
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button
-                className="btn btn-primary btn-large flex items-center justify-center text-center"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection('products');
-                }}
-              >
-                Get Started <FaArrowRight className="ml-2" />
-              </button>
+            {/* Main Heading */}
+            <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold mb-8 text-slate-900 leading-tight">
+              <span className="relative">
+                <span className="text-slate-800">{displayedText || '\u00A0'}</span>
+                <span className="inline-block w-[3px] h-[1.2em] bg-gradient-to-b from-emerald-500 to-blue-500 animate-blink align-middle ml-2"></span>
+              </span>
+            </h1>
+
+            {/* Content with Read More/Less */}
+            <div className="mb-12">
+              <div className="text-slate-600 text-lg leading-relaxed space-y-4">
+                <p>
+                  You want expert sustainability support and verified renewable energy
+                  providers? Get started by telling us a bit about yourself and/or your
+                  organisation.
+                </p>
+                
+                {leftShowMore && (
+                  <div className="space-y-4">
+                    <p>
+                      We recognise that for households, businesses, and public
+                      organisations, rising energy bills can be a concern, just like
+                      carbon-emitting operations, which harm our planet.
+                    </p>
+                    <p>
+                      That's why we are here to help: whether your goal is to reduce costs, 
+                      improve energy efficiency, reduce carbon emissions, make measured progress 
+                      on your sustainability journey, and achieve good returns on investment 
+                      and a greener planet, RENEW is your all-in-one solution.
+                    </p>
+                  </div>
+                )}
+              </div>
 
               <button
-                className="btn btn-secondary btn-large flex items-center justify-center text-center"
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollToSection('contact');
-                }}
+                onClick={() => setLeftShowMore(!leftShowMore)}
+                className="mt-6 inline-flex items-center gap-2 text-emerald-600 hover:text-emerald-700 font-medium transition-colors group"
               >
-                <FaPhone className="mr-2" />
-                Contact Us
+                {leftShowMore ? (
+                  <>
+                    <FaChevronUp className="group-hover:-translate-y-1 transition-transform" />
+                    Read less
+                  </>
+                ) : (
+                  <>
+                    <FaChevronDown className="group-hover:translate-y-1 transition-transform" />
+                    Read more
+                  </>
+                )}
+                <div className="w-0 group-hover:w-16 h-[2px] bg-gradient-to-r from-emerald-500 to-blue-500 transition-all duration-300 ml-2"></div>
               </button>
             </div>
 
+            {/* CTA Button */}
+            <button
+              className="group relative inline-flex items-center gap-4 bg-gradient-to-r from-emerald-500 to-blue-600 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('products');
+              }}
+            >
+              <span className="relative z-10">Get Started Now</span>
+              <FaArrowRight className="relative z-10 group-hover:translate-x-2 transition-transform" />
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-emerald-500 opacity-0 group-hover:opacity-100 rounded-xl transition-opacity duration-300"></div>
+            </button>
           </div>
 
-          {/* RIGHT SIDE VISUAL */}
-          <div className="relative flex justify-center items-center">
-            <div className="absolute w-64 h-64 lg:w-80 lg:h-80 rounded-full bg-gradient-to-tr from-green-200 via-green-100 to-transparent opacity-40 animate-float-slow -top-10 -left-10 z-0"></div>
-            <div className="absolute w-48 h-48 rounded-full bg-gradient-to-br from-green-300 to-transparent opacity-30 animate-float-slow-slow top-20 right-0 z-0"></div>
-
-            <div className="relative z-10">
-              <div className="w-64 h-64 lg:w-80 lg:h-80 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center mx-auto shadow-2xl transition-transform duration-500 hover:scale-105">
-                <FaSolarPanel className="text-white text-5xl lg:text-7xl" />
+          {/* RIGHT SIDE - Clean Modern Design */}
+          <div className="relative bg-white rounded-3xl p-8 lg:p-10 shadow-2xl border border-slate-200">
+            {/* Decorative Corner */}
+            <div className="absolute -top-4 -right-4 w-16 h-16 bg-gradient-to-br from-emerald-500 to-blue-500 rounded-2xl rotate-12 shadow-lg"></div>
+            
+            {/* Badge */}
+            <div className="mb-8">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-50 to-emerald-50 px-4 py-2 rounded-full mb-4">
+                <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                <span className="text-sm font-semibold text-slate-700">SUSTAINABILITY ASSESSMENT</span>
               </div>
-
-              <div className="absolute -top-8 -left-8 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg z-20 animate-float">
-                <FaBolt className="text-green-600 text-2xl rotate-[20deg]" />
-              </div>
-
-              <div className="absolute top-4 right-0 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg z-20 animate-float animation-delay-700">
-                <FaLeaf className="text-green-600 text-2xl rotate-[-15deg]" />
-              </div>
-
-              <div className="absolute bottom-0 -right-8 w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg z-20 animate-float animation-delay-1400">
-                <FaChargingStation className="text-green-600 text-2xl rotate-[10deg]" />
-              </div>
-
-              <div className="absolute top-1/2 left-1/2 w-6 h-6 bg-green-400 rounded-full opacity-50 animate-bounce-slow"></div>
-              <div className="absolute bottom-1/4 right-1/4 w-8 h-8 bg-green-300 rounded-full opacity-40 animate-bounce-slower"></div>
             </div>
+
+            {/* Main Heading */}
+            <h2 className="text-4xl lg:text-5xl font-bold mb-8 text-slate-900 leading-tight">
+              I Need Help With Sustainability and Net Zero
+            </h2>
+
+            {/* Content with Read More/Less */}
+            <div className="mb-12">
+              <div className="text-slate-600 text-lg leading-relaxed space-y-4">
+                <p>
+                  Don't know where or how to start on your sustainability and net-zero journey? 
+                  Take our Sustainability Baseline Assessment (SBA) to get going.
+                </p>
+                
+                {rightShowMore && (
+                  <div className="space-y-4">
+                    <p>
+                      The world of sustainability and net-zero can be overwhelming and leave 
+                      you puzzled. It's a never-ending journey, and there's always a mark to make.
+                    </p>
+                    <p>
+                      This can leave otherwise well-intentioned businesses and organisations 
+                      drained and demotivated. Don't worry, we are here to unpack the lot and 
+                      set you on a clear path of progress on sustainability leadership and net-zero.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <button
+                onClick={() => setRightShowMore(!rightShowMore)}
+                className="mt-6 inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium transition-colors group"
+              >
+                {rightShowMore ? (
+                  <>
+                    <FaChevronUp className="group-hover:-translate-y-1 transition-transform" />
+                    Read less
+                  </>
+                ) : (
+                  <>
+                    <FaChevronDown className="group-hover:translate-y-1 transition-transform" />
+                    Learn more
+                  </>
+                )}
+                <div className="w-0 group-hover:w-16 h-[2px] bg-gradient-to-r from-blue-500 to-emerald-500 transition-all duration-300 ml-2"></div>
+              </button>
+            </div>
+
+            {/* CTA Button */}
+            <button
+              className="group relative inline-flex items-center gap-4 bg-gradient-to-r from-slate-800 to-slate-900 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] w-full justify-center"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('contact');
+              }}
+            >
+              <FaExternalLinkAlt className="relative z-10 group-hover:rotate-12 transition-transform" />
+              <span className="relative z-10">Take SBA Now</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-slate-900 to-slate-800 opacity-0 group-hover:opacity-100 rounded-xl transition-opacity duration-300"></div>
+            </button>
           </div>
 
         </div>

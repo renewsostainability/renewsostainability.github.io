@@ -271,12 +271,16 @@ export default function ProductsPage() {
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white sm:py-12 px-4 sm:px-6 lg:px-2">
       <div className="container mx-auto max-w-7xl">
         {/* Header */}
-        <header className="text-center mb-2 sm:mb-16">
-          <div className="inline-flex items-center gap-2 bg-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-medium text-green-700 shadow-lg mb-4 sm:mb-6 text-sm sm:text-base">
+        <div className="text-center mb-6 sm:mb-1">
+          <div className="inline-flex items-center gap-2 bg-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-medium text-green-700 shadow-lg text-sm sm:text-base">
             <FaStar className="text-yellow-500 text-sm sm:text-base" />
             <span className="font-semibold">Our Sustainability Solutions</span>
           </div>
-        </header>
+        </div>
+
+        <div className="text-center mb-8">
+          <p className="text-gray-600 mt-4">Network partners for sustainable collaboration</p>
+        </div>
 
         {/* Slider Section */}
         <section
