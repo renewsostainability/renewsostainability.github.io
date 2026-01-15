@@ -1,4 +1,5 @@
 import React from 'react';
+import ReadMoreText from './ReadMoreText';
 
 const BenefitsPage = () => {
   return (
@@ -32,14 +33,16 @@ const BenefitsPage = () => {
             <h3 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-8">
               The RENEW Technology as Competitive Advantage
             </h3>
-            <div className="prose prose-lg text-gray-700 space-y-6">
-              <p>
-                RENEW uses <span className="font-semibold text-green-600">Artificial Intelligence (AI)</span> to interpret data for eligibility, onboarding solutions, tracking progress, and transparent reporting. The platform showcases verified sustainability opportunities and decarbonization solutions, undertakes automated prequalification, and connects users to providers in a seamless interaction that leaves all parties truly satisfied.
-                Aside from resolving pain points, RENEW also helps users progress further on their sustainability journey by providing <span className="font-semibold text-green-600">customised recommendations and guidance</span> for the long haul.
-              </p>
-              <p>
-                RENEW marketplace caters to everyone needing help with sustainability — from product and service providers to users seeking effective and efficient solutions; from entities needing support in determining baseline to guidance on improvements and advancement.
-              </p>
+            <div className="prose prose-lg text-xl text-gray-700 space-y-6">
+              <ReadMoreText previewLength={500} buttonPosition="newline" html={`
+                <p>
+                  RENEW uses <span className="font-semibold text-green-600">Artificial Intelligence (AI)</span> to interpret data for eligibility, onboarding solutions, tracking progress, and transparent reporting. The platform showcases verified sustainability opportunities and decarbonization solutions, undertakes automated prequalification, and connects users to providers in a seamless interaction that leaves all parties truly satisfied.
+                  Aside from resolving pain points, RENEW also helps users progress further on their sustainability journey by providing <span className="font-semibold text-green-600">customised recommendations and guidance</span> for the long haul.
+                </p>
+                <p>
+                  RENEW marketplace caters to everyone needing help with sustainability — from product and service providers to users seeking effective and efficient solutions; from entities needing support in determining baseline to guidance on improvements and advancement.
+                </p>
+              `} />
             </div>
           </div>
         </div>

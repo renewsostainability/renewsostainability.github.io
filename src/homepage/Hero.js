@@ -201,7 +201,7 @@ export default function Hero() {
               }}
             >
               <FaExternalLinkAlt className="relative z-10 group-hover:rotate-12 transition-transform" />
-              <span className="relative z-10">Take SBA Now</span>
+              <span className="relative z-10">Take the SBA Now</span>
               <div className="absolute inset-0 bg-gradient-to-r from-slate-900 to-slate-800 opacity-0 group-hover:opacity-100 rounded-xl transition-opacity duration-300"></div>
             </button>
           </div>

@@ -5,10 +5,15 @@ import {
   FaRocket,
   FaBullseye,
   FaLeaf,
+  FaChevronUp,
+  FaChevronDown,
   FaArrowRight
 } from "react-icons/fa";
+import ReadMoreText from './ReadMoreText';
+import { useState } from "react";
 
 export default function About() {
+  const [showAll, setShowAll] = useState(false);
   const sections = [
     {
       icon: <FaGlobe className="text-white text-2xl" />,
@@ -29,6 +34,21 @@ export default function About() {
       gradient: "from-amber-500 to-orange-500"
     }
   ];
+
+  const sdgs = [
+    { id: 7, title: "Affordable and Clean Energy", image: "imgs/sdg7.png" },
+    { id: 8, title: "Decent Work and Economic Growth", image: "imgs/sdg8.png" },
+    { id: 9, title: "Industry, Innovation, and Infrastructure", image: "imgs/sdg9.png" },
+    { id: 10, title: "Reduced Inequalities", image: "imgs/sdg10.png" },
+    { id: 11, title: "Sustainable Cities and Communities", image: "imgs/sdg11.png" },
+    { id: 12, title: "Responsible Consumption and Production", image: "imgs/sdg12.png" },
+    { id: 13, title: "Climate Action", image: "imgs/sdg13.png" },
+    { id: 17, title: "Partnerships for the Goals", image: "imgs/sdg17.png" }
+  ];
+
+  const displayedSdgs = showAll ? sdgs : sdgs.slice(0, 2);
+
+
 
   const painPoints = [
     "Aware of the need for sustainability, but don't know where to start.",
@@ -59,13 +79,13 @@ export default function About() {
               </div>
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-4">{section.title}</h3>
-            <p className="text-gray-600 leading-relaxed">{section.content}</p>
+            <ReadMoreText text={section.content} previewLength={150} buttonPosition="newline" />
           </div>
         ))}
       </div>
 
       {/* Why RENEW Section */}
-      <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-2xl mb-16">       
+      <div className="p-8 rounded-2xl mb-16">       
         
         <div className="grid md:grid-cols-2 gap-8">
           <div>
@@ -73,20 +93,25 @@ export default function About() {
                 <FaRocket className="text-green-600 text-xl" />
                 <h3 className="text-2xl ml-6 font-bold text-gray-900">Why RENEW is the New Deal</h3>
               </div>
-              <p className="text-gray-700 leading-relaxed">
-                The drive for sustainability, decarbonization, and net zero comes with some pain points, 
-                including information overload, time constraints, and resource limitations, especially for 
-                Micro, Small, and Medium Enterprises (MSMEs). For some, the problem is not knowing where 
-                to start; for others, it is not knowing which solutions to trust and how to stay ahead 
-                of competition and the regulatory curve.
-              </p>
-              <p className="text-gray-700 leading-relaxed">
-                RENEW helps you cut through the noise, simplify the jargon, and connect you with verified 
-                opportunities and solutions. It also helps determine your baseline and eligibility for 
-                recommended products and services, and provides guided steps for improvements and progression.
-              </p>
-              <p className="text-gray-700 leading-relaxed">
-                All of these in one place within a secure and dedicated space where you own and control the narrative at your pace.
+              <p className="text-gray-700 text-xl leading-relaxed font-xl">
+                <ReadMoreText previewLength={500} buttonPosition="newline" html={`
+                  <p className="text-gray-700 leading-relaxed">
+                  The drive for sustainability, decarbonization, and net zero comes with some pain points, 
+                  including information overload, time constraints, and resource limitations, especially for 
+                  Micro, Small, and Medium Enterprises (MSMEs). For some, the problem is not knowing where 
+                  to start; for others, it is not knowing which solutions to trust and how to stay ahead 
+                  of competition and the regulatory curve.
+                  </p>
+                  <p className="text-gray-700 leading-relaxed">
+                  RENEW helps you cut through the noise, simplify the jargon, and connect you with verified 
+                  opportunities and solutions. It also helps determine your baseline and eligibility for 
+                  recommended products and services, and provides guided steps for improvements and progression.
+                  </p>
+                  <p className="text-gray-700 leading-relaxed">
+                  All of these in one place within a secure and dedicated space where you own and control the narrative at your pace.
+                  </p>
+                `}/>
+                
               </p>
           </div>
           
@@ -102,9 +127,11 @@ export default function About() {
                 </li>
               ))}
             </ul>
-            <p className="italic mt-2" style={{color: 'green'}}>
-              These often result in inaction after awareness — businesses and other organisations are aware of the gaps and weaknesses, but cannot access practical, reliable, and affordable solutions. This is where RENEW comes in!
-            </p>
+              <ReadMoreText previewLength={0} buttonPosition="newline" html={`
+                <p className="italic mt-2" style={{color: 'green'}}>
+                  These often result in inaction after awareness — businesses and other organisations are aware of the gaps and weaknesses, but cannot access practical, reliable, and affordable solutions. This is where RENEW comes in!
+                </p>
+              `}/>
           </div>
         </div>
       </div>
@@ -112,42 +139,62 @@ export default function About() {
       {/* SDGs Section */}
       <div className="container mx-auto px-4 py-12">
 
-  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
 
-    {/* LEFT COLUMN – TEXT WITH ILLUSTRATIVE IMAGE */}
-    <div className="flex flex-col items-start">
-      {/* Suggested illustrative image for the left column */}
-      <img
-        src="imgs/world.png" 
-        alt="United Nations Sustainable Development Goals icons grid" 
-        className="w-full max-w-xs sm:max-w-sm md:max-w-md h-auto object-contain"
-      />
-    </div>
+          {/* LEFT COLUMN – TEXT WITH ILLUSTRATIVE IMAGE */}
+          <div className="flex flex-col items-start">
+            {/* Suggested illustrative image for the left column */}
+            <img
+              src="imgs/world.png" 
+              alt="United Nations Sustainable Development Goals icons grid" 
+              className="w-full max-w-xs sm:max-w-sm md:max-w-md h-auto object-contain"
+            />
+          </div>
 
-    {/* RIGHT COLUMN – SDG LIST */}
-    <div className="bg-gray-50 rounded-2xl p-4 shadow-sm">
-      <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
-        RENEW and the SDGs
-      </h2>
+          {/* RIGHT COLUMN – SDG LIST */}
+          <div className="bg-gray-100 rounded-2xl p-4 shadow-sm">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
+              RENEW and the SDGs
+            </h2>
 
-      <p className="text-lg leading-relaxed mb-8" style={{color: 'green'}}>
-        RENEW Marketplace contributes to the fulfilment of the following Sustainable Development Goals (SDGs):
-      </p>
-      <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 text-lg">
-        <li><strong>SDG 7:</strong> Affordable and Clean Energy</li>
-        <li><strong>SDG 8:</strong> Decent Work and Economic Growth</li>
-        <li><strong>SDG 9:</strong> Industry, Innovation, and Infrastructure</li>
-        <li><strong>SDG 10:</strong> Reduced Inequalities</li>
-        <li><strong>SDG 11:</strong> Sustainable Cities and Communities</li>
-        <li><strong>SDG 12:</strong> Responsible Consumption and Production</li>
-        <li><strong>SDG 13:</strong> Climate Action</li>
-        <li><strong>SDG 17:</strong> Partnerships for the Goals</li>
-      </ul>
-    </div>
+            <p className="text-lg leading-relaxed mb-8" style={{color: 'green'}}>
+              RENEW Marketplace contributes to the fulfilment of the following Sustainable Development Goals (SDGs):
+            </p>
+            <div className="max-h-[350px] overflow-y-auto space-y-4">
+              {displayedSdgs.map((sdg) => (
+                <div
+                  key={sdg.id}
+                  className="flex items-center bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition gap-4"
+                >
+                  <img
+                    src={sdg.image}
+                    alt={`SDG ${sdg.id}: ${sdg.title}`}
+                    className="w-16 h-16 object-contain flex-shrink-0"
+                  />
+                  <div className="flex-1">
+                    <span className="text-sm font-semibold text-gray-800">
+                      SDG {sdg.id}
+                    </span>
+                    <p className="text-gray-600 text-sm">{sdg.title}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {sdgs.length > 2 && (
+              <button
+                onClick={() => setShowAll(!showAll)}
+                className="flex items-center gap-1 text-green-600 font-medium hover:underline mt-2"
+              >
+                {showAll ? "Show less" : "Show more"}
+                {showAll ? <FaChevronUp size={12} /> : <FaChevronDown size={12} />}
+              </button>
+            )}
 
-  </div>
+          </div>
 
-</div>
+        </div>
+
+      </div>
 
     </div>
   );

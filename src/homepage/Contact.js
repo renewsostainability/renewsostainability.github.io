@@ -51,28 +51,12 @@ export default function Contact() {
             Start Your <span className="bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">Energy Savings</span> Journey
           </h2>
           
-          <p className="text-lg text-gray-600 leading-relaxed mb-10">
+          <p className="text-lg text-gray-600 leading-relaxed mb-18" style={{marginBottom: 100}}>
             Ready to reduce your energy costs and carbon footprint? Fill out the form 
             and our energy experts will contact you within 24 hours for a free, no-obligation assessment.
           </p>
 
-          <div className="flex flex-col gap-6">
-            {/* Phone Contact */}
-            <div className="flex items-center gap-4 p-6 bg-white rounded-lg shadow-sm border border-gray-200 transition-all duration-300 hover:translate-x-2 hover:shadow-md">
-              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center flex-shrink-0">
-                <FaPhoneAlt className="text-white text-lg" />
-              </div>
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-1">Call Us</h4>
-                <a 
-                  href="tel:+441234567890" 
-                  className="text-green-600 font-medium hover:text-green-700 transition-colors duration-300"
-                >
-                  +44 123 456 7890
-                </a>
-              </div>
-            </div>
-            
+          <div className="flex flex-col gap-6">            
             {/* Email Contact */}
             <div className="flex items-center gap-4 p-6 bg-white rounded-lg shadow-sm border border-gray-200 transition-all duration-300 hover:translate-x-2 hover:shadow-md">
               <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-700 rounded-full flex items-center justify-center flex-shrink-0">

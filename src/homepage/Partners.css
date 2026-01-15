@@ -14,6 +14,36 @@
     animation-play-state: paused;
 }
 
+/* Partners.css */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-100% - 2rem));
+  }
+}
+
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+
+.hover\:\[&\_\.marquee\]\:animate-pause:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .animate-marquee {
+    animation-duration: 30s;
+  }
+  
+  div.w-screen.ml-\[calc\(-50vw\+50\%\)\] > div {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}
+
 /* Ensure no horizontal scroll */
 html, body {
     overflow-x: hidden;

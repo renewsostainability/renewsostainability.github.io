@@ -27,8 +27,7 @@ export default function Footer() {
             {/* Brand Section */}
             <div className="lg:col-span-2 flex flex-col gap-6">
               <div className="flex items-center gap-3 text-xl font-bold">
-                <FaLeaf className="text-green-500 text-2xl" />
-                <span>RENEW</span>
+                <img src="imgs/Renew logo reverse -without description (transparent background).png" alt="logo" className="w-50 h-10" />
               </div>
               <p className="text-gray-300 leading-relaxed max-w-md">
                 RENEW by SOStainability helps households, businesses, and investors 
@@ -177,15 +176,6 @@ export default function Footer() {
                       className="text-gray-300 hover:text-green-500 transition-colors duration-300"
                     >
                       renew@sostainability.co.uk
-                    </a>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <FaPhone className="text-green-500 w-4" />
-                    <a 
-                      href="tel:+441234567890" 
-                      className="text-gray-300 hover:text-green-500 transition-colors duration-300"
-                    >
-                      +44 123 456 7890
                     </a>
                   </li>
                   <li className="flex items-center gap-3">

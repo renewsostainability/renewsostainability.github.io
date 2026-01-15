@@ -2,98 +2,96 @@ import './Partners.css';
 import { FaHandshake } from "react-icons/fa";
 
 export default function Partners() {
-  const sponsors = [
+  const partners = [
     {
-      name: 'University of Staffordshire; Newcastle Under Lyme, and UKSP',
-      logo: '🎓',
-      description: 'Academic Research Partner'
-    },
-  ];
-
-  const affiliates = [
-    {
-      name: 'SBEN',
-      logo: '🔋',
-      description: 'Sustainable Business Energy Network'
+      image: 'imgs/sben Partner Logo AW for website.jpg',
+      description: 'Staffordshire Business & Environment Network'
     },
     {
-      name: 'ASP',
-      logo: '🤝',
-      description: 'Affiliate Sustainability Program'
+      image: 'imgs/UofS_Master_Logo_RGB (6).png',
+      description: 'University of Sustainability'
+    },
+    {
+      image: 'imgs/NuLBC Logo (1).jpg',
+      description: 'Newcastle-under-Lyme Borough Council'
+    },
+    {
+      image: 'imgs/Funded by UK Gov-01 (1) (1).png',
+      description: 'UK Government'
     }
   ];
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-full font-medium text-green-600 shadow-md mb-6">
-          <FaHandshake className="text-orange-500" />
-          Trusted Partnerships
+    <div>
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-full font-medium text-green-600 shadow-md mb-6">
+            <FaHandshake className="text-orange-500" />
+            Trusted Partnerships
+          </div>
+          <h2 className="text-4xl font-bold mb-4">
+            Our <span className="bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">Partners</span> in Sustainability
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Working with leading organizations to deliver comprehensive energy solutions 
+            and maximize environmental impact across all sectors.
+          </p>
         </div>
-        <h2 className="text-4xl font-bold mb-4">
-          Our <span className="bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">Partners</span> in Sustainability
-        </h2>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Working with leading organizations to deliver comprehensive energy solutions 
-          and maximize environmental impact across all sectors.
-        </p>
       </div>
 
-      {/* Two-column layout */}
-      <div className="flex flex-col lg:flex-row gap-8">
-        
-        {/* Sponsors Column */}
-        <div className="flex-1 p-8 rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-100">
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-gray-800 mb-2">Our Sponsor</h3>
-            <div className="w-24 h-1 bg-gradient-to-r from-green-600 to-green-800 mx-auto rounded-full"></div>
-            <p className="text-gray-600 mt-4">Strategic partner who support our mission</p>
+      {/* Full width marquee container */}
+      <div className="w-screen ml-[calc(-50vw+50%)] relative">
+  <div className="overflow-hidden relative py-12 bg-gradient-to-br from-emerald-50/40 to-teal-50/40 border-t border-b border-gray-100/50 hover:[&_.marquee]:animate-pause">
+    
+    {/* Fade overlays for edges */}
+    <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+    <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+    
+    <div className="flex animate-marquee group/marquee">
+      {/* First set of partners */}
+      <div className="flex flex-shrink-0 items-center gap-8 px-8">
+        {partners.map((partner, index) => (
+          <div key={`partner-${index}`} className="flex flex-col items-center justify-center gap-4 p-4 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/60 min-w-[280px] transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-emerald-300 hover:scale-[1.02] group-hover/marquee:opacity-100 opacity-90">
+            <div className="relative w-full h-32 flex items-center justify-center p-4">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/30 to-teal-50/30 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <img 
+                src={partner.image} 
+                alt={partner.name || "Partner logo"} 
+                className="relative w-full h-full object-contain transition-all duration-500"
+              />
+            </div>
+            <div className="text-center">
+              <h5 className="font-semibold text-gray-800 text-lg mb-1 group-hover:text-emerald-700 transition-colors duration-300">
+                {partner.description || "Partner Name"}
+              </h5>
+            </div>
           </div>
-          
-          <div className="space-y-6">
-            {sponsors.map((partner, index) => (
-              <div 
-                key={index} 
-                className="flex items-center gap-4 p-6 bg-white rounded-xl shadow-sm border border-gray-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-green-500"
-              >
-                <div className="text-4xl w-16 h-16 flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-green-100 to-green-50 rounded-xl border border-green-200">
-                  {partner.logo}
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-bold text-gray-900 text-lg mb-2">{partner.name}</h4>
-                  <p className="text-gray-600">{partner.description}</p>
-                </div>
-              </div>
-            ))}
+        ))}
+      </div>
+      
+      {/* Duplicate for seamless loop */}
+      <div className="flex flex-shrink-0 items-center gap-8 px-8" aria-hidden="true">
+        {partners.map((partner, index) => (
+          <div key={`partner-duplicate-${index}`} className="flex flex-col items-center justify-center gap-4 p-4 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-200/60 min-w-[280px] transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-emerald-300 hover:scale-[1.02] group-hover/marquee:opacity-100 opacity-90">
+            <div className="relative w-full h-32 flex items-center justify-center p-4">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/30 to-teal-50/30 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <img 
+                src={partner.image} 
+                alt={partner.description || "Partner logo"} 
+                className="relative w-full h-full object-contain transition-all duration-500"
+              />
+            </div>
+            <div className="text-center">
+              <h5 className="font-semibold text-gray-800 text-lg mb-1 group-hover:text-emerald-700 transition-colors duration-300">
+                {partner.description || "Partner Name"}
+              </h5>
+            </div>
           </div>
-        </div>
-
-        {/* Affiliates Column */}
-        <div className="flex-1 p-8 rounded-2xl bg-gradient-to-br from-gray-50 to-cyan-50 border border-gray-100">
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-gray-800 mb-2">Our Affiliates</h3>
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-cyan-600 mx-auto rounded-full"></div>
-            <p className="text-gray-600 mt-4">Network partners for sustainable collaboration</p>
-          </div>
-          
-          <div className="space-y-6">
-            {affiliates.map((partner, index) => (
-              <div 
-                key={index} 
-                className="flex items-center gap-4 p-6 bg-white rounded-xl shadow-sm border border-gray-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-blue-500"
-              >
-                <div className="text-4xl w-16 h-16 flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-blue-100 to-blue-50 rounded-xl border border-blue-200">
-                  {partner.logo}
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-bold text-gray-900 text-lg mb-2">{partner.name}</h4>
-                  <p className="text-gray-600">{partner.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        ))}
       </div>
     </div>
-  );
+  </div>
+</div>
+    </div>
+  )
 }

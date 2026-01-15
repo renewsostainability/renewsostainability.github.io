@@ -53,10 +53,7 @@ export default function Header() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between py-4">
             <div className="flex items-center gap-3 text-xl font-bold text-gray-900">
-              <FaLeaf className="text-green-600 text-2xl" />
-              <span className="bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
-                RENEW
-              </span>
+              <img src="imgs/Renew logo normal (transparent background).png" alt="logo" className="w-10 h-10" />
             </div>
 
             <button className="btn btn-primary flex items-center gap-2">
@@ -85,10 +82,7 @@ export default function Header() {
               className="flex items-center gap-3 text-gray-900 font-bold text-xl"
               onClick={() => (window.location.href = "#/")}
             >
-              <FaLeaf className="text-green-600 text-2xl" />
-              <span className="bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent">
-                RENEW
-              </span>
+              <img src="imgs/Renew logo normal -without description (transparent background).png" alt="logo" className="w-50 h-10" />
             </button>
 
             {/* Desktop Nav */}

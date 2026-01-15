@@ -11,6 +11,7 @@ import Contact from './homepage/Contact';
 import Footer from './homepage/Footer';
 import About from './homepage/About';
 import Benefits from './homepage/Benefits';
+import FloatingSBAButton from './homepage/FloatingSBAButton';
 
 import './custom-css.css';
 
@@ -42,13 +43,14 @@ export default function Home() {
         <main>
           <section id="home"><Hero /></section>
           <section id="products" className="section-bg"><Products /></section>
-          <section id="about-us" className="section section-bg-alt"><About /></section>
-          <section id="why-us" className="section"><WhyUs /></section>
           <section id="how-it-works" className="section section-bg-alt"><HowItWorks /></section>
+          <section id="about-us" className="section section-bg"><About /></section>
+          <section id="why-us" className="section section-bg-alt"><WhyUs /></section>
           <section id="benefits" className="section"><Benefits /></section>
           <section id="partners" className="section section-bg"><Partners /></section>
           {/* <section id="faq" className="section section-bg-alt"><FAQ /></section> */}
           <section id="contact" className="section section-bg-alt"><Contact /></section>
+          <FloatingSBAButton />
         </main>
         <Footer />
       </div>
