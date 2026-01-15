@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import Header from './homepage/Header';
 import Hero from './homepage/Hero';
+import Hero2 from './homepage/Hero2';
 import Products from './homepage/Products.js';
 import WhyUs from './homepage/WhyUs';
 import HowItWorks from './homepage/HowItWorks';
@@ -42,6 +43,7 @@ export default function Home() {
         <Header />
         <main>
           <section id="home"><Hero /></section>
+          {/* <section id="home"><Hero2 /></section> */}
           <section id="products" className="section-bg"><Products /></section>
           <section id="how-it-works" className="section section-bg-alt"><HowItWorks /></section>
           <section id="about-us" className="section section-bg"><About /></section>

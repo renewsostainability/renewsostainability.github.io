@@ -194,15 +194,17 @@ export default function Hero() {
 
             {/* CTA Button */}
             <button
-              className="group relative inline-flex items-center gap-4 bg-gradient-to-r from-slate-800 to-slate-900 text-white px-8 py-4 rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] w-full justify-center"
+              className="group relative inline-flex items-center gap-4 bg-white text-gray-800 px-8 py-4 rounded-lg text-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 border border-gray-200"
               onClick={(e) => {
                 e.preventDefault();
                 scrollToSection('contact');
               }}
             >
-              <FaExternalLinkAlt className="relative z-10 group-hover:rotate-12 transition-transform" />
-              <span className="relative z-10">Take the SBA Now</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-slate-900 to-slate-800 opacity-0 group-hover:opacity-100 rounded-xl transition-opacity duration-300"></div>
+              <span className="relative z-10 bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
+                Take the SBA Now
+              </span>
+              <FaExternalLinkAlt className="relative z-10 text-emerald-500 group-hover:translate-x-2 transition-transform" />
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 rounded-lg transition-opacity duration-300"></div>
             </button>
           </div>
 
