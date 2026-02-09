@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 
 import Header from './homepage/Header';
 import Hero from './homepage/Hero';
-import Hero2 from './homepage/Hero2';
+import Hero3 from './homepage/Hero3';
 import Products from './homepage/Products.js';
 import WhyUs from './homepage/WhyUs';
 import HowItWorks from './homepage/HowItWorks';
+import HowItWorks2 from './homepage/HowItWorks2';
 import Partners from './homepage/Partners';
 import FAQ from './homepage/FAQ';
 import Contact from './homepage/Contact';
@@ -42,10 +43,10 @@ export default function Home() {
       <div className="home-page">
         <Header />
         <main>
-          <section id="home"><Hero /></section>
-          {/* <section id="home"><Hero2 /></section> */}
+          <section id="home"><Hero3 /></section>
           <section id="products" className="section-bg"><Products /></section>
           <section id="how-it-works" className="section section-bg-alt"><HowItWorks /></section>
+          <section id="how-it-works-2" className="section section-bg-alt"><HowItWorks2 /></section>
           <section id="about-us" className="section section-bg"><About /></section>
           <section id="why-us" className="section section-bg-alt"><WhyUs /></section>
           <section id="benefits" className="section"><Benefits /></section>

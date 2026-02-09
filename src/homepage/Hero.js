@@ -1,3 +1,4 @@
+// hero
 import './Hero.css';
 import { useEffect, useState } from 'react';
 import { FaStar, FaArrowRight, FaExternalLinkAlt, FaChevronDown, FaChevronUp } from "react-icons/fa";
@@ -56,14 +57,6 @@ export default function Hero() {
           
           {/* LEFT SIDE - Clean Modern Design */}
           <div className="relative">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-3 bg-white px-5 py-3 rounded-2xl font-semibold text-slate-700 shadow-lg mb-10 border border-slate-200">
-              <FaStar className="text-amber-500 animate-pulse" />
-              <span className="bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent">
-                Welcome to RENEW
-              </span>
-              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></div>
-            </div>
 
             {/* Main Heading */}
             <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold mb-8 text-slate-900 leading-tight">
@@ -141,7 +134,7 @@ export default function Hero() {
             <div className="mb-8">
               <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-50 to-emerald-50 px-4 py-2 rounded-full mb-4">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                <span className="text-sm font-semibold text-slate-700">SUSTAINABILITY ASSESSMENT</span>
+                <span className="text-sm font-semibold text-slate-700">Sustainability Baseline Assessment (SBA)</span>
               </div>
             </div>
 

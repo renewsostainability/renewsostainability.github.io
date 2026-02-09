@@ -59,11 +59,8 @@ export default function About() {
   return (
     <div className="container mx-auto px-4 py-16">
       {/* Header Section */}
-      <div className="text-center mb-2">
-        <div className="inline-flex items-center gap-2 bg-white px-6 py-3 rounded-full font-medium text-green-600 shadow-md mb-6">
-          <FaLeaf className="text-green-500" />
-          About RENEW
-        </div>
+      <div className="text-center mb-2 flex items-center justify-center">
+        <img src="imgs/Renew logo normal (transparent background).png" alt="RENEW Logo" className="mb-8 w-80 h-33" />
       </div>
 
       {/* Main Sections */}
@@ -134,7 +131,7 @@ export default function About() {
               `}/>
           </div>
         </div>
-      </div>
+      </div> 
 
       {/* SDGs Section */}
       <div className="container mx-auto px-4 py-12">

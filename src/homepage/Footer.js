@@ -30,7 +30,7 @@ export default function Footer() {
                 <img src="imgs/Renew logo reverse -without description (transparent background).png" alt="logo" className="w-50 h-10" />
               </div>
               <p className="text-gray-300 leading-relaxed max-w-md">
-                RENEW by SOStainability helps households, businesses, and investors 
+                Renewable Energy and Net Emissions Workspace (RENEW) by SOStainability helps households, businesses, and investors 
                 reduce energy costs, improve efficiency, and embrace sustainability 
                 through comprehensive energy solutions.
               </p>

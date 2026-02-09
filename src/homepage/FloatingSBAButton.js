@@ -62,9 +62,7 @@ export default function FloatingSBAButton() {
         >
           <FaExternalLinkAlt className="text-lg" />
           <span>Take the SBA Now</span>
-          <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-xs font-bold animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite]">
-            !
-          </div>
+
           
           {/* Animated ring around button */}
           <div className="absolute -inset-2 rounded-2xl border-2 border-emerald-400/30 animate-[ping_3s_cubic-bezier(0,0,0.2,1)_infinite]" />
