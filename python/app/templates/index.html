@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>RenewSo — Document Assessment Platform</title>
+<title>Renew — Document Assessment Platform</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -308,22 +308,15 @@
 
 <header>
   <a href="/" class="logo">
-    <div class="logo-leaf">🌿</div>
-    <span class="logo-text">Renew<span>So</span></span>
+    <span class="logo-text">Renew</span>
   </a>
   <span class="header-badge">Assessment Platform</span>
 </header>
 
 <div class="container">
   <div class="page-intro">
-    <h1>Document Assessment Dashboard</h1>
-    <p>Upload your products &amp; services PDFs, preview them at full fidelity, and receive a detailed AI-powered assessment report directly to your email.</p>
-  </div>
-
-  <div class="stats-row">
-    <div class="stat-card"><div class="stat-val" id="stat-count">0</div><div class="stat-label">Documents</div></div>
-    <div class="stat-card"><div class="stat-val" id="stat-size">0 KB</div><div class="stat-label">Total Size</div></div>
-    <div class="stat-card"><div class="stat-val" id="stat-reports">0</div><div class="stat-label">Reports Sent</div></div>
+    <h1>Renew AI Dashboard</h1>
+    <p>Upload your products &amp; services PDFs, preview them, and receive a detailed AI-powered report directly to your email.</p>
   </div>
 
   <div class="grid">
@@ -393,7 +386,7 @@
 
         <div class="form-group">
           <label>Full Name</label>
-          <input type="text" id="user-name" placeholder="e.g. Tomiwa Oluwadare" />
+          <input type="text" id="user-name" placeholder="Full Name" />
         </div>
         <div class="form-group">
           <label>Email Address</label>
@@ -404,13 +397,6 @@
           <span id="btn-label">Generate &amp; Email Report</span>
         </button>
 
-        <div class="result-banner" id="result-banner">
-          <div class="result-icon">✅</div>
-          <div>
-            <h4>Report Ready!</h4>
-            <a id="result-link" href="#" target="_blank">View HTML Report →</a>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -449,8 +435,6 @@
 
 <script>
   let selectedDocId = null;
-  let reportsSent = parseInt(localStorage.getItem('reports_sent') || '0');
-  document.getElementById('stat-reports').textContent = reportsSent;
 
   // ---- INIT ----
   loadDocuments();
@@ -508,9 +492,6 @@
   function renderDocs(docs) {
     const list = document.getElementById('doc-list');
     list.innerHTML = '';
-    document.getElementById('stat-count').textContent = docs.length;
-    const totalBytes = docs.reduce((s, d) => s + (d.size || 0), 0);
-    document.getElementById('stat-size').textContent = formatSize(totalBytes);
 
     docs.forEach(doc => {
       const item = document.createElement('div');
@@ -541,48 +522,49 @@
 
   // ---- PDF PREVIEW ----
   function viewDocPDF(id, name) {
-    const overlay   = document.getElementById('modal-overlay');
-    const iframe    = document.getElementById('pdf-iframe');
-    const ph        = document.getElementById('pdf-placeholder');
-    const phMsg     = document.getElementById('pdf-placeholder-msg');
-    const dlBtn     = document.getElementById('modal-download-btn');
-    const icon      = document.getElementById('modal-icon');
-    const subtitle  = document.getElementById('modal-subtitle');
+  const overlay  = document.getElementById('modal-overlay');
+  const iframe   = document.getElementById('pdf-iframe');
+  const ph       = document.getElementById('pdf-placeholder');
+  const phMsg    = document.getElementById('pdf-placeholder-msg');
+  const dlBtn    = document.getElementById('modal-download-btn');
+  const icon     = document.getElementById('modal-icon');
+  const subtitle = document.getElementById('modal-subtitle');
 
-    document.getElementById('modal-title').textContent = name;
-    subtitle.textContent = 'Loading PDF…';
-    icon.textContent = '📕';
+  document.getElementById('modal-title').textContent = name;
+  subtitle.textContent = 'Loading PDF…';
+  icon.textContent = '📕';
 
-    // Reset state
-    iframe.style.display = 'none';
-    iframe.src = '';
-    ph.style.display = 'flex';
-    ph.classList.remove('error');
-    phMsg.textContent = 'Loading PDF…';
-    dlBtn.style.display = 'none';
+  // Reset state
+  iframe.style.display = 'none';
+  iframe.src = '';
+  ph.style.display = 'flex';
+  ph.classList.remove('error');
+  phMsg.textContent = 'Loading PDF…';
+  dlBtn.style.display = 'none';
 
-    overlay.classList.add('open');
+  overlay.classList.add('open');
 
-    const previewUrl = `/api/documents/${id}/preview-pdf`;
+  const previewUrl = `/api/documents/${id}/preview-pdf`;
 
-    fetch(previewUrl, { method: 'HEAD' })
-      .then(res => {
-        if (!res.ok) return res.json().then(d => { throw new Error(d.error || 'Preview failed'); });
-        iframe.src = previewUrl;
-        iframe.style.display = 'block';
-        ph.style.display = 'none';
-        subtitle.textContent = 'Original PDF';
-        dlBtn.href = previewUrl;
-        dlBtn.download = name;
-        dlBtn.style.display = 'inline-flex';
-      })
-      .catch(err => {
-        ph.classList.add('error');
-        phMsg.textContent = '⚠ ' + err.message;
-        subtitle.textContent = 'Preview unavailable';
-      });
-  }
+  // Set src directly — let the browser handle it
+  // Use iframe's onload/onerror instead of a preflight fetch
+  iframe.onload = () => {
+    iframe.style.display = 'block';
+    ph.style.display = 'none';
+    subtitle.textContent = 'Original PDF';
+    dlBtn.href = previewUrl;
+    dlBtn.download = name;
+    dlBtn.style.display = 'inline-flex';
+  };
 
+  iframe.onerror = () => {
+    ph.classList.add('error');
+    phMsg.textContent = '⚠ Preview unavailable';
+    subtitle.textContent = 'Preview unavailable';
+  };
+
+  iframe.src = previewUrl;
+}
   // ---- DELETE ----
   async function deleteDoc(id) {
     if (!confirm('Delete this document?')) return;
@@ -614,7 +596,6 @@
     const label = document.getElementById('btn-label');
     btn.disabled = true;
     label.innerHTML = '<div class="spinner"></div> Processing…';
-    document.getElementById('result-banner').classList.remove('show');
 
     try {
       const res = await fetch('/api/process', {
@@ -624,13 +605,6 @@
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Processing failed');
-
-      reportsSent++;
-      localStorage.setItem('reports_sent', reportsSent);
-      document.getElementById('stat-reports').textContent = reportsSent;
-
-      document.getElementById('result-link').href = data.preview_url;
-      document.getElementById('result-banner').classList.add('show');
 
       toast(data.email_sent ? '📧 Report emailed to ' + email : '✅ Report generated. ' + data.message,
             data.email_sent ? 'success' : 'info');

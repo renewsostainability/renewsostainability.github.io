@@ -15,6 +15,9 @@ from datetime import datetime
 from werkzeug.utils import secure_filename
 import uuid
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+os.chdir(BASE_DIR)  # Add this right after imports, before folder definitions
+
 # -------------------- LOAD ENVIRONMENT VARIABLES --------------------
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
@@ -129,72 +132,73 @@ def generate_html_report(text, user_data):
     </tr>""" for i, s in enumerate(suggested_services))
 
     html = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Assessment Report</title>
-<style>
-  body {{ font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f8; margin: 0; padding: 40px 0; color: #1f2937; }}
-  .document {{ max-width: 960px; margin: 0 auto; background: #fff; box-shadow: 0 10px 28px rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden; }}
-  .letterhead {{ display: flex; justify-content: space-between; align-items: center; padding: 30px 40px; border-bottom: 4px solid #10b981; background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); }}
-  .brand h1 {{ margin: 0; font-size: 1.8rem; color: #fff; }} .brand p {{ margin: 4px 0 0; font-size: 0.85rem; color: #6ee7b7; }}
-  .meta {{ text-align: right; font-size: 0.85rem; color: #a7f3d0; line-height: 1.6; }}
-  .content {{ padding: 40px; }}
-  .status-box {{ padding: 25px; border-radius: 8px; margin-bottom: 30px; border-left: 6px solid #10b981; background: #ecfdf5; }}
-  .status-title {{ font-size: 1.5rem; font-weight: 700; color: #065f46; margin-bottom: 6px; }}
-  .status-sub {{ color: #374151; font-size: 0.95rem; }}
-  .client-info table {{ width: 100%; border-collapse: collapse; margin-bottom: 30px; }}
-  .client-info td {{ padding: 7px 0; font-size: 0.95rem; border-bottom: 1px solid #f3f4f6; }}
-  h2 {{ margin: 35px 0 15px; font-size: 1.3rem; color: #065f46; border-bottom: 2px solid #d1fae5; padding-bottom: 8px; }}
-  table.data-table {{ width: 100%; border-collapse: collapse; font-size: 0.93rem; margin-bottom: 25px; }}
-  table.data-table th {{ background: #064e3b; color: #fff; padding: 12px 14px; text-align: left; }}
-  table.data-table td {{ padding: 11px 14px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }}
-  table.data-table tr:hover {{ background: #f9fafb; }}
-  .service-title {{ font-weight: 600; }} .service-category {{ font-size: 0.82rem; color: #6b7280; margin-top: 2px; }}
-  a {{ color: #10b981; text-decoration: none; }} a:hover {{ text-decoration: underline; }}
-  .plan-step {{ display: flex; gap: 20px; padding: 18px 20px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 16px; }}
-  .plan-step-number {{ width: 38px; height: 38px; border-radius: 50%; background: #065f46; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; flex-shrink: 0; }}
-  .plan-step h3 {{ margin: 0 0 6px; font-size: 1.05rem; }} .plan-step p {{ margin: 0; color: #4b5563; font-size: 0.92rem; }}
-  .footer {{ margin-top: 40px; padding: 20px 40px; background: #f9fafb; border-top: 1px solid #e5e7eb; font-size: 0.82rem; color: #9ca3af; text-align: center; }}
-</style>
-</head>
-<body>
-<div class="document">
-  <div class="letterhead">
-    <div class="brand"><h1>RenewSo Sustainability</h1><p>Energy Efficiency Assessment Platform</p></div>
-    <div class="meta">Generated: {datetime.now().strftime('%d %b %Y, %H:%M')}<br/>Ref: RS-{datetime.now().strftime('%Y%m%d%H%M%S')}</div>
-  </div>
-  <div class="content">
-    <div class="status-box">
-      <div class="status-title">✅ Assessment Complete</div>
-      <div class="status-sub">Products and services have been extracted from your document successfully.</div>
-    </div>
-    <div class="client-info">
-      <table>
-        <tr><td><strong>Applicant:</strong></td><td>{user_data.get('name', 'Customer')}</td></tr>
-        <tr><td><strong>Email:</strong></td><td>{user_data.get('email', 'Not provided')}</td></tr>
-        <tr><td><strong>Date:</strong></td><td>{datetime.now().strftime('%d %B %Y')}</td></tr>
-      </table>
-    </div>
-    <h2>Extracted Products &amp; Services</h2>
-    <table class="data-table">
-      <thead><tr><th>#</th><th>Service</th><th>Category</th><th>Link</th></tr></thead>
-      <tbody>{html_rows}</tbody>
-    </table>
-    <h2>Recommended Services</h2>
-    <table class="data-table">
-      <thead><tr><th>#</th><th>Service</th><th>Description</th><th>Action</th></tr></thead>
-      <tbody>{services_rows}</tbody>
-    </table>
-    <h2>Recommended Action Plan</h2>
-    <div class="plan-step"><div class="plan-step-number">1</div><div><h3>Initial Assessment</h3><p>Schedule a comprehensive energy assessment to identify the most impactful improvements.</p></div></div>
-    <div class="plan-step"><div class="plan-step-number">2</div><div><h3>Implementation Strategy</h3><p>Work with certified installers to implement cost-effective energy efficiency measures.</p></div></div>
-    <div class="plan-step"><div class="plan-step-number">3</div><div><h3>Reassessment &amp; Application</h3><p>Once improvements are complete, obtain a new EPC certificate and reapply for support.</p></div></div>
-  </div>
-  <div class="footer">This assessment is based on information provided and may be subject to verification. &copy; {datetime.now().year} RenewSo Sustainability.</div>
-</div>
-</body>
-</html>"""
+        <html lang="en">
+        <head>
+        <meta charset="UTF-8">
+        <title>Assessment Report</title>
+        <style>
+        body {{ font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f8; margin: 0; padding: 40px 0; color: #1f2937; }}
+        .document {{ max-width: 960px; margin: 0 auto; background: #fff; box-shadow: 0 10px 28px rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden; }}
+        .letterhead {{ display: flex; justify-content: space-between; align-items: center; padding: 30px 40px; border-bottom: 4px solid #10b981; background: #064e3b; }}
+        .brand h1 {{ margin: 0; font-size: 1.8rem; color: #fff; }} .brand p {{ margin: 4px 0 0; font-size: 0.85rem; color: #6ee7b7; }}
+        .meta {{ text-align: right; font-size: 0.85rem; color: #a7f3d0; line-height: 1.6; }}
+        .content {{ padding: 40px; }}
+        .status-box {{ padding: 25px; border-radius: 8px; margin-bottom: 30px; border-left: 6px solid #10b981; background: #ecfdf5; }}
+        .status-title {{ font-size: 1.5rem; font-weight: 700; color: #065f46; margin-bottom: 6px; }}
+        .status-sub {{ color: #374151; font-size: 0.95rem; }}
+        .client-info table {{ width: 100%; border-collapse: collapse; margin-bottom: 30px; }}
+        .client-info td {{ padding: 7px 0; font-size: 0.95rem; border-bottom: 1px solid #f3f4f6; }}
+        h2 {{ margin: 35px 0 15px; font-size: 1.3rem; color: #065f46; border-bottom: 2px solid #d1fae5; padding-bottom: 8px; }}
+        table.data-table {{ width: 100%; border-collapse: collapse; font-size: 0.93rem; margin-bottom: 25px; }}
+        table.data-table th {{ background: #064e3b; color: #fff; padding: 12px 14px; text-align: left; }}
+        table.data-table td {{ padding: 11px 14px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }}
+        table.data-table tr:hover {{ background: #f9fafb; }}
+        .service-title {{ font-weight: 600; }} .service-category {{ font-size: 0.82rem; color: #6b7280; margin-top: 2px; }}
+        a {{ color: #10b981; text-decoration: none; }} a:hover {{ text-decoration: underline; }}
+        .plan-step {{ display: flex; gap: 20px; padding: 18px 20px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 16px; }}
+        .plan-step-number {{ width: 38px; height: 38px; border-radius: 50%; background: #065f46; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; flex-shrink: 0; }}
+        .plan-step h3 {{ margin: 0 0 6px; font-size: 1.05rem; }} .plan-step p {{ margin: 0; color: #4b5563; font-size: 0.92rem; }}
+        .footer {{ margin-top: 40px; padding: 20px 40px; background: #f9fafb; border-top: 1px solid #e5e7eb; font-size: 0.82rem; color: #9ca3af; text-align: center; }}
+        </style>
+        </head>
+        <body>
+        <div class="document">
+        <div class="letterhead">
+            <div class="brand"><h1>Renew</h1><p>Energy Efficiency Assessment Platform</p></div>
+            <div class="meta">Generated: {datetime.now().strftime('%d %b %Y, %H:%M')}<br/>Ref: RS-{datetime.now().strftime('%Y%m%d%H%M%S')}</div>
+        </div>
+        <div class="content">
+            <div class="status-box">
+            <div class="status-title">✅ Assessment Complete</div>
+            <div class="status-sub">Products and services have been extracted from your document successfully.</div>
+            </div>
+            <div class="client-info">
+            <table>
+                <tr><td><strong>Applicant:</strong></td><td>{user_data.get('name', 'Customer')}</td></tr>
+                <tr><td><strong>Email:</strong></td><td>{user_data.get('email', 'Not provided')}</td></tr>
+                <tr><td><strong>Date:</strong></td><td>{datetime.now().strftime('%d %B %Y')}</td></tr>
+            </table>
+            </div>
+            <h2>Extracted Products &amp; Services</h2>
+            <table class="data-table">
+            <thead><tr><th>#</th><th>Service</th><th>Category</th><th>Link</th></tr></thead>
+            <tbody>{html_rows}</tbody>
+            </table>
+            <h2>Recommended Services</h2>
+            <table class="data-table">
+            <thead><tr><th>#</th><th>Service</th><th>Description</th><th>Action</th></tr></thead>
+            <tbody>{services_rows}</tbody>
+            </table>
+            <h2>Recommended Action Plan</h2>
+            <div class="plan-step"><div class="plan-step-number">1</div><div><h3>Initial Assessment</h3><p>Schedule a comprehensive energy assessment to identify the most impactful improvements.</p></div></div>
+            <div class="plan-step"><div class="plan-step-number">2</div><div><h3>Implementation Strategy</h3><p>Work with certified installers to implement cost-effective energy efficiency measures.</p></div></div>
+            <div class="plan-step"><div class="plan-step-number">3</div><div><h3>Reassessment &amp; Application</h3><p>Once improvements are complete, obtain a new EPC certificate and reapply for support.</p></div></div>
+        </div>
+        <div class="footer">This assessment is based on information provided and may be subject to verification. &copy; {datetime.now().year} Renew Sustainability.</div>
+        </div>
+        </body>
+        </html>
+    """
     return html, None
 
 
@@ -203,8 +207,8 @@ def send_email(to_email, to_name, html_content):
         return False, "Email credentials not configured in .env"
     try:
         msg = MIMEMultipart("alternative")
-        msg["Subject"] = "Your RenewSo Sustainability Assessment Report"
-        msg["From"] = f"RenewSo Assessment <{SMTP_USER}>"
+        msg["Subject"] = "Your Renew Sustainability Assessment Report"
+        msg["From"] = f"Renew Assessment <{SMTP_USER}>"
         msg["To"] = to_email
 
         # Plain text fallback (important for email clients)
@@ -215,7 +219,7 @@ def send_email(to_email, to_name, html_content):
         If you cannot view this email properly, please contact support.
 
         Best regards,
-        RenewSo Team
+        Renew Team
         """
 
         # 👇 THIS is the key change
