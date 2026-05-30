@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import Header from './homepage/Header';
-import Hero from './homepage/Hero';
+import Hero1 from './homepage/Hero';
+import Hero2 from './homepage/Hero2';
 import Hero3 from './homepage/Hero3';
 import Products from './homepage/Products.js';
 import WhyUs from './homepage/WhyUs';
@@ -43,7 +44,7 @@ export default function Home() {
       <div className="home-page">
         <Header />
         <main>
-          <section id="home"><Hero3 /></section>
+          <section id="home"><Hero1 /></section>
           <section id="products" className="section-bg"><Products /></section>
           <section id="how-it-works" className="section section-bg-alt"><HowItWorks /></section>
           <section id="how-it-works-2" className="section section-bg-alt"><HowItWorks2 /></section>

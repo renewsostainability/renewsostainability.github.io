@@ -143,10 +143,8 @@ export default function ProductsPage() {
   const [isMobile, setIsMobile] = useState(false);
 
   const sliderRef = useRef(null);
-  const intervalRef = useRef(null);
 
   const minSwipeDistance = 50;
-  const AUTO_PLAY_INTERVAL = 10000; // 10 seconds — slower and more user-friendly
 
   // Detect mobile
   useEffect(() => {
@@ -196,40 +194,6 @@ export default function ProductsPage() {
     if (isLeftSwipe) nextSlide();
     if (isRightSwipe) prevSlide();
   };
-
-  // Auto-play with pause on hover/touch
-  useEffect(() => {
-    const startInterval = () => {
-      intervalRef.current = setInterval(nextSlide, AUTO_PLAY_INTERVAL);
-    };
-
-    const pauseInterval = () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    };
-
-    startInterval();
-
-    const slider = sliderRef.current;
-    if (slider) {
-      slider.addEventListener('mouseenter', pauseInterval);
-      slider.addEventListener('mouseleave', startInterval);
-      slider.addEventListener('touchstart', pauseInterval);
-      slider.addEventListener('touchend', startInterval);
-    }
-
-    return () => {
-      pauseInterval();
-      if (slider) {
-        slider.removeEventListener('mouseenter', pauseInterval);
-        slider.removeEventListener('mouseleave', startInterval);
-        slider.removeEventListener('touchstart', pauseInterval);
-        slider.removeEventListener('touchend', startInterval);
-      }
-    };
-  }, [nextSlide]);
 
   // Scroll to contact section
   const scrollToContact = () => {
