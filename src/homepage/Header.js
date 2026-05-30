@@ -40,7 +40,7 @@ export default function Header() {
     { id: "benefits", label: "Benefits" },
     { id: "products", label: "Marketplace" },
     { id: "why-us", label: "Why Us" },
-    { id: "login", label: "Login" },
+    // { id: "login", label: "Login" },
     { id: "admin", label: "Admin" },
   ];
 
